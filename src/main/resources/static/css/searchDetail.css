@@ -1,0 +1,66 @@
+.time {
+    font-size: 13px;
+    color: #999;
+}
+
+.bottom {
+    margin-top: 13px;
+    line-height: 12px;
+}
+
+.button {
+    padding: 0;
+    float: right;
+}
+
+.image {
+    width: 100%;
+    display: block;
+}
+
+.clearfix:before,
+.clearfix:after {
+    display: table;
+    content: "";
+}
+
+.clearfix:after {
+    clear: both
+}
+
+.demo-table-expand {
+    font-size: 0;
+}
+
+.demo-table-expand label {
+    width: 90px;
+    color: black;
+}
+
+.demo-table-expand .el-form-item {
+    margin-right: 0;
+    margin-bottom: 0;
+    /*width: 50%;*/
+}
+
+.el-dialog {
+    background-color: #333333;
+}
+
+.el-dialog p {
+    color: #FFFFFF;
+}
+
+.el-card {
+    cursor: pointer;
+}
+
+#related .el-card {
+    display: inline-block;
+    width: 25%;
+}
+
+#related p {
+    text-overflow: ellipsis;
+    overflow: hidden;
+}

@@ -1,0 +1,27 @@
+html{
+    background-color: #333333;
+}
+img{
+    cursor: pointer;
+}
+
+.el-carousel{
+    margin-left: 20%;
+    background-color: #FFFFFF;
+    width: 60%;
+    color: white;
+}
+.el-carousel h1{
+    color: white;
+    display: inline;
+    /*float: left;*/
+}
+.el-carousel h3{
+    color: white;
+    left: 0;
+    display: block;
+    /*display: inline;*/
+}
+.el-carousel p{
+    display: inline;
+}

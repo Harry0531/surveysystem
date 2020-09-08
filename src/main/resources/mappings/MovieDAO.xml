@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bit.ss.surveysystem.modules.DAO.MovieDAO">
+    <resultMap id="BaseResultMap" type="bit.ss.surveysystem.modules.entity.MovieEntity">
+        <id column="movieid" jdbcType="INTEGER" property="id" />
+        <result column="moviename" jdbcType="VARCHAR" property="movieName" />
+        <result column="showyear" jdbcType="DATE" property="showDate" />
+        <result column="director" jdbcType="VARCHAR" property="director" />
+        <result column="leadactors" jdbcType="VARCHAR" property="actors" />
+        <result column="picture" jdbcType="VARCHAR" property="picture" />
+        <result column="averating" jdbcType="DOUBLE" property="rating" />
+        <result column="description" jdbcType="VARCHAR" property="description" />
+        <result column="typelist" jdbcType="VARCHAR" property="types" />
+        <result column="backpost" jdbcType="VARCHAR" property="bigPicture" />
+    </resultMap>
+    <select id="getDefaultMovie" resultMap="BaseResultMap">
+        select * from movie_info where movieid in
+        (select t.movieid from
+            (select `movieid` from top_rating_movies limit #{num})
+         as t
+        )
+    </select>
+    <select id="getMovieById" resultMap="BaseResultMap">
+        select * from movie_info where movieid=#{id}
+    </select>
+    <select id="getRecommendMovieById" resultMap="BaseResultMap">
+        select * from movie_info where movieid in
+        (select t.`movieid` from
+            (select `movieid` from recommend_for_user where userId=#{id} order by `rating` desc limit 3)
+         as t
+        )
+    </select>
+    <select id="getMoviesByName" resultMap="BaseResultMap">
+        select * from movie_info where moviename
+        like concat('%',#{movieName},'%')
+        <if test="types != null and types != ''">
+            and `typelist` like concat('%',#{types},'%')
+        </if>
+        order by ${orderBy}
+        ${sortBy}
+        limit #{page.pageStart}, #{page.pageSize}
+    </select>
+    <select id="getMoviesNumByName" resultType="int">
+        select count(*) from movie_info
+        where moviename like concat('%',#{movieName},'%')
+        <if test="types != null and types != ''">
+            and `typelist` like concat('%',#{types},'%')
+        </if>
+    </select>
+    <select id="getRelatedMovies" resultMap="BaseResultMap">
+        select * from movie_info where movieid in
+        (select t.`itemid2` from
+            (select `itemid2` from recommend_for_movie where itemid1=#{id} order by `similar` desc limit 5)
+         as t
+        )
+    </select>
+    <select id="getRecentTopMovies" resultMap="BaseResultMap">
+        select * from movie_info where movieid in
+        (select t.movieid from
+            (select `movieid` from top_count_movies limit 10)
+         as t
+        )
+    </select>
+</mapper>
