@@ -1,9 +1,9 @@
-package bit.ss.surveysystem.modules.controller;
+package bit.ss.surveysystem.modules.sys.Controller;
 
 import bit.ss.surveysystem.common.web.BaseApi;
 import bit.ss.surveysystem.common.web.MsgType;
-import bit.ss.surveysystem.modules.Service.UserService;
-import bit.ss.surveysystem.modules.entity.UserEntity;
+import bit.ss.surveysystem.modules.sys.Service.UserService;
+import bit.ss.surveysystem.modules.sys.Entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

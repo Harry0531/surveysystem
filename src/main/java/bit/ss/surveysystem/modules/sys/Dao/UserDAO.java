@@ -1,6 +1,6 @@
-package bit.ss.surveysystem.modules.DAO;
+package bit.ss.surveysystem.modules.sys.Dao;
 
-import bit.ss.surveysystem.modules.entity.UserEntity;
+import bit.ss.surveysystem.modules.sys.Entity.UserEntity;
 
 public interface UserDAO {
     int getUserNumberByName(String userName);

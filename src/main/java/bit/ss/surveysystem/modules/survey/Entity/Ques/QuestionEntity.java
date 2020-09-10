@@ -1,6 +1,5 @@
-package bit.ss.surveysystem.modules.entity.Ques;
+package bit.ss.surveysystem.modules.survey.Entity.Ques;
 
-import bit.ss.surveysystem.modules.entity.Ques.QuestionType;
 import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;

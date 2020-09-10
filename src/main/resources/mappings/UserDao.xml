@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="bit.ss.surveysystem.modules.DAO.UserDAO">
-    <resultMap id="BaseResultMap" type="bit.ss.surveysystem.modules.entity.UserEntity">
+<mapper namespace="bit.ss.surveysystem.modules.sys.Dao.UserDAO">
+    <resultMap id="BaseResultMap" type="bit.ss.surveysystem.modules.sys.Entity.UserEntity">
         <id column="userid" jdbcType="INTEGER" property="id" />
         <result column="username" jdbcType="VARCHAR" property="userName" />
         <result column="password" jdbcType="VARCHAR" property="password" />
@@ -15,13 +15,13 @@
     <select id="getPasswordByName" resultType="java.lang.String">
         select password from sys_user where `username`=#{userName}
     </select>
-    <insert id="insertUserEntry" parameterType="bit.ss.surveysystem.modules.entity.UserEntity">
+    <insert id="insertUserEntry" parameterType="bit.ss.surveysystem.modules.sys.Entity.UserEntity">
         insert into sys_user
         (`userid`,`username`,`password`,`registertime`,`lastlogintime`)
         values
         (#{id},#{userName},#{password},#{registerTime},#{lastLoginTime})
     </insert>
-    <update id="updateLoginTime" parameterType="bit.ss.surveysystem.modules.entity.UserEntity">
+    <update id="updateLoginTime" parameterType="bit.ss.surveysystem.modules.sys.Entity.UserEntity">
         update sys_user set `lastlogintime`=#{lastLoginTime} where `userid`=#{id}
     </update>
     <select id="getUserInfoByUsername"

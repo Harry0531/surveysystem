@@ -1,13 +1,11 @@
 package bit.ss.surveysystem;
 
-import bit.ss.surveysystem.modules.Service.SurveyService;
-import bit.ss.surveysystem.modules.entity.Ques.QuestionEntity;
-import bit.ss.surveysystem.modules.entity.SurveyEntity;
+import bit.ss.surveysystem.modules.survey.Service.SurveyService;
+import bit.ss.surveysystem.modules.survey.Entity.SurveyEntity;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.querydsl.QuerydslUtils;
 
 import java.util.ArrayList;
 import java.util.List;

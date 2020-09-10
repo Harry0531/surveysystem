@@ -1,11 +1,8 @@
-package bit.ss.surveysystem.modules.Service;
+package bit.ss.surveysystem.modules.survey.Service;
 
-import bit.ss.surveysystem.modules.entity.SurveyEntity;
-import com.sun.corba.se.spi.ior.ObjectId;
+import bit.ss.surveysystem.modules.survey.Entity.SurveyEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

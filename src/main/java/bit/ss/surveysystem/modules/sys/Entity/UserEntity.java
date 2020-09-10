@@ -1,11 +1,12 @@
-package bit.ss.surveysystem.modules.entity;
+package bit.ss.surveysystem.modules.sys.Entity;
 
+import bit.ss.surveysystem.common.persistence.DataEntity;
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
-public class UserEntity {
+public class UserEntity extends DataEntity<UserEntity> {
     private int id;
     private String userName;
     private String password;

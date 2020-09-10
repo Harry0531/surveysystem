@@ -1,7 +1,7 @@
-package bit.ss.surveysystem.modules.Service;
+package bit.ss.surveysystem.modules.sys.Service;
 
-import bit.ss.surveysystem.modules.DAO.UserDAO;
-import bit.ss.surveysystem.modules.entity.UserEntity;
+import bit.ss.surveysystem.modules.sys.Dao.UserDAO;
+import bit.ss.surveysystem.modules.sys.Entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
