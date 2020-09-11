@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bit.ss.surveysystem.modules.sys.Dao.DictDao">
+
+
+    <resultMap id="dictBean" type="bit.ss.surveysystem.modules.sys.Entity.Dict">
+        <id property="id" column="id"/>
+        <result column="dic_property" property="dicProperty"/>
+        <result column="dic_value" property="dicValue"/>
+        <result column="father" property="father"/>
+        <result column="remark" property="remark"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="sort" property="sort"/>
+    </resultMap>
+
+
+    <select id="selectDictTypeList" resultType="String">
+      select `dic_property`
+      from sys_dict
+      <where>
+          <if test="1 == 1 ">
+              del_flag != 1
+          </if>
+      </where>
+      group by `dic_property`
+    </select>
+
+    <select id="selectSearchCount" parameterType="bit.ss.surveysystem.modules.sys.Entity.Dict" resultType="int">
+        select count(*) from sys_dict a
+        <where>
+            <if test="page.searchKey != '' and page.searchKey != null">
+                and a.dic_property like concat('%', #{page.searchKey}, '%')
+            </if>
+            <if test="1 == 1 ">
+                del_flag != 1
+            </if>
+        </where>
+    </select>
+
+    <select id="selectDictListByPage" parameterType="bit.ss.surveysystem.modules.sys.Entity.Dict"
+            resultMap="dictBean">
+        select a.*,
+        c.dic_value as fatherName
+        from sys_dict a
+        LEFT JOIN sys_dict c on a.father=c.id
+        <where>
+            <if test="page.searchKey != '' and page.searchKey != null">
+                and   a.`dic_property`=#{page.searchKey}
+            </if>
+            <if test="1 == 1 ">
+                del_flag != 1
+            </if>
+        </where>
+        ORDER BY a.`sort` DESC
+        limit #{page.pageStart}, #{page.pageSize}
+        for update
+    </select>
+
+
+    <insert id="insertDict" parameterType="bit.ss.surveysystem.modules.sys.Entity.Dict" >
+        insert into sys_dict (
+        `id`,
+        `sort`,
+        `dic_property`,
+        `dic_value`,
+        `father`,
+        `del_flag`,
+        `remark`
+        )values (
+          #{id},
+          #{sort},
+          #{dicProperty},
+          #{dicValue},
+          #{father},
+          #{delFlag},
+          #{remark}
+        )
+    </insert>
+
+    <update id="deleteDictByIds" parameterType="bit.ss.surveysystem.modules.sys.Entity.Dict">
+        update sys_dict set `del_flag`=1-`del_flag` where id in
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item.id}
+        </foreach>
+    </update>
+
+    <update id="deleteDictById" parameterType="bit.ss.surveysystem.modules.sys.Entity.Dict">
+        update `sys_dict` set `del_flag`=1-`del_flag` where `id`=#{id}
+    </update>
+
+    <update id="updateDict" parameterType="bit.ss.surveysystem.modules.sys.Entity.Dict">
+        update  sys_dict
+        set `dic_property` = #{dicProperty},
+            `dic_value`    = #{dicValue},
+            `father`       = #{father},
+            `remark`       = #{remark},
+            `sort`         = #{sort}
+        where id =#{id}
+    </update>
+
+
+</mapper>
