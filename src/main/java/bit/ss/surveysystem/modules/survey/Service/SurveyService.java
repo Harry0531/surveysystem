@@ -3,6 +3,7 @@ package bit.ss.surveysystem.modules.survey.Service;
 import bit.ss.surveysystem.modules.survey.Entity.SurveyEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +17,8 @@ public class SurveyService {
     public List<SurveyEntity> selectSurveyByOwnerId(String ownerId){
         //Query query = Query.query(Criteria.where(""))
         List<SurveyEntity> surveyEntities = mongoTemplate.findAll(SurveyEntity.class);
+        Criteria opration = Criteria.where("dasdsa");
+        opration.and("dsa");
         return surveyEntities;
     }
 

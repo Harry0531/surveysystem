@@ -1,12 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="bit.ss.surveysystem.modules.sys.Dao.UserDAO">
-    <resultMap id="BaseResultMap" type="bit.ss.surveysystem.modules.sys.Entity.UserEntity">
-        <id column="userid" jdbcType="INTEGER" property="id" />
-        <result column="username" jdbcType="VARCHAR" property="userName" />
-        <result column="password" jdbcType="VARCHAR" property="password" />
-        <result column="registertime" jdbcType="TIMESTAMP" property="registerTime" />
-        <result column="lastlogintime" jdbcType="TIMESTAMP" property="lastLoginTime" />
+    <resultMap id="BaseResultMap" type="bit.ss.surveysystem.modules.sys.Entity.UserInfoEntity">
+        <id column="id" jdbcType="INTEGER" property="id" />
+
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="admission_number" jdbcType="VARCHAR" property="admissionNumber" />
+        <result column="ranking_section" jdbcType="VARCHAR" property="rankingSection" />
+        <result column="contact" jdbcType="VARCHAR" property="contact" />
+        <result column="alternate_contact" jdbcType="VARCHAR" property="alternateContact" />
+        <result column="student_name" jdbcType="VARCHAR" property="student_name" />
+        <result column="province" jdbcType="VARCHAR" property="province" />
+        <result column="city" jdbcType="VARCHAR" property="city" />
+        <result column="address" jdbcType="VARCHAR" property="address" />
+        <result column="high_school" jdbcType="VARCHAR" property="highSchool" />
+        <result column="major" jdbcType="VARCHAR" property="major" />
+        <result column="fractional_segment" jdbcType="VARCHAR" property="fractionalSegment" />
+        <result column="ranking_section" jdbcType="VARCHAR" property="rankingSection" />
+
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="qiangji_plan" jdbcType="INTEGER" property="qiangjiPlan"/>
+        <result column="tiqianpi" jdbcType="INTEGER" property="tiqianpi"/>
+        <result column="signed" jdbcType="INTEGER" property="signed"/>
+        <result column="year" jdbcType="INTEGER" property="year"/>
      </resultMap>
 
     <select id="getUserNumberByName" resultType="int">
@@ -17,18 +33,51 @@
     </select>
     <insert id="insertUserEntry" parameterType="bit.ss.surveysystem.modules.sys.Entity.UserEntity">
         insert into sys_user
-        (`userid`,`username`,`password`,`registertime`,`lastlogintime`)
+        (`id`,`username`,`password`,`registertime`,`lastlogintime`,`email`,`role`)
         values
-        (#{id},#{userName},#{password},#{registerTime},#{lastLoginTime})
+        (#{id},#{userName},#{password},#{registerTime},#{lastLoginTime},#{email},#{role})
     </insert>
     <update id="updateLoginTime" parameterType="bit.ss.surveysystem.modules.sys.Entity.UserEntity">
         update sys_user set `lastlogintime`=#{lastLoginTime} where `userid`=#{id}
     </update>
-    <select id="getUserInfoByUsername"
-     resultMap="BaseResultMap">
-        select * from sys_user where `username`=#{userName}
-    </select>
-    <select id="getAvailableId" resultType="int">
-        select min(userid) from sys_user
+
+
+    <insert id="insertUserInfoEntry" parameterType="bit.ss.surveysystem.modules.sys.Entity.UserInfoEntity">
+        insert into user_info
+        (`id`,`admission_number`)values (#{id},#{admissionNumber})
+    </insert>
+    <update id="updateUserInfo" parameterType="bit.ss.surveysystem.modules.sys.Entity.UserInfoEntity">
+        update user_info
+        set `name`=#{name},
+            `contact`=#{contact},
+            `alternate_contact`=#{alternateContact},
+            `type`=#{type},
+            `student_name`=#{studentName},
+            `province`=#{province},
+            `city`=#{city},
+            `address`=#{address},
+            `high_school`=#{highSchool},
+            `major`=#{major},
+            `fractional_segment`=#{fractionalSegment},
+            `ranking_section`=#{rankingSection},
+            `qiangji_plan`=#{qiangjiPlan},
+            `tiqianpi`=#{tiqianpi},
+            `signed`=#{signed},
+            `year`=#{year},
+            `admission_number`=#{admissionNumber}
+        where `id`=#{id}
+    </update>
+
+    <!--TODO 添加多种筛选-->
+    <select id="getUserInfoByEntity" parameterType="bit.ss.surveysystem.modules.sys.Entity.UserInfoEntity" resultMap="BaseResultMap">
+        select * from user_info
+        <where>
+            <if test="name != null and name !='' ">
+                `name` = #{name}
+            </if>
+            <if test="id != null and id !='' ">
+                `id`=#{id}
+            </if>
+        </where>
     </select>
 </mapper>

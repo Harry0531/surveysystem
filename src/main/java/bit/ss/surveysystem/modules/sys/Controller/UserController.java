@@ -2,6 +2,7 @@ package bit.ss.surveysystem.modules.sys.Controller;
 
 import bit.ss.surveysystem.common.web.BaseApi;
 import bit.ss.surveysystem.common.web.MsgType;
+import bit.ss.surveysystem.modules.sys.Entity.UserInfoEntity;
 import bit.ss.surveysystem.modules.sys.Service.UserService;
 import bit.ss.surveysystem.modules.sys.Entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ public class UserController extends BaseApi {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "isNameUnused", method = RequestMethod.POST)
+    @RequestMapping(value = "isNameUsed", method = RequestMethod.POST)
     @ResponseBody
     public Object isNameUnused(@RequestParam("userName") String userName) {
         try {
@@ -46,6 +47,32 @@ public class UserController extends BaseApi {
             if (userService.register(user))
                 return retMsg.Set(MsgType.SUCCESS, true);
             return retMsg.Set(MsgType.SUCCESS, false);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return retMsg.Set(MsgType.ERROR, e.toString());
+        }
+    }
+
+    @RequestMapping(value = "updateUserInfo", method = RequestMethod.POST)
+    @ResponseBody
+    public Object updateUserInfo(@RequestBody UserInfoEntity user) {
+        try {
+            if (userService.updateUserInfo(user))
+                return retMsg.Set(MsgType.SUCCESS, true);
+            return retMsg.Set(MsgType.SUCCESS, false);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return retMsg.Set(MsgType.ERROR, e.toString());
+        }
+    }
+
+
+    @RequestMapping(value = "getUserInfo", method = RequestMethod.POST)
+    @ResponseBody
+    public Object getUserInfo(@RequestBody UserInfoEntity user) {
+        try {
+            UserInfoEntity userInfoEntity = userService.getUserInfoById(user);
+            return retMsg.Set(MsgType.SUCCESS,userInfoEntity);
         } catch (Exception e) {
             e.printStackTrace();
             return retMsg.Set(MsgType.ERROR, e.toString());

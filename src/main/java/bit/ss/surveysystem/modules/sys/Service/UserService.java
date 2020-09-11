@@ -2,10 +2,15 @@ package bit.ss.surveysystem.modules.sys.Service;
 
 import bit.ss.surveysystem.modules.sys.Dao.UserDAO;
 import bit.ss.surveysystem.modules.sys.Entity.UserEntity;
+import bit.ss.surveysystem.modules.sys.Entity.UserInfoEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import sun.util.locale.provider.FallbackLocaleProviderAdapter;
 
+import java.lang.reflect.Field;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -27,11 +32,29 @@ public class UserService {
             return "Wrong password";
     }
 
+
     public boolean register(UserEntity user) {
         if (!isNameUnused(user.getUserName()))
             return false;
-        int availableId = userDAO.getAvailableId() - 1;
-        user.preInsert(availableId);
-        return userDAO.insertUserEntry(user) == 1;
+        user.preInsert();
+        UserInfoEntity userInfoEntity = new UserInfoEntity();
+        userInfoEntity.setId(user.getId());
+        userInfoEntity.setAdmissionNumber(user.getUserName());
+        try{
+            userDAO.insertUserInfoEntry(userInfoEntity);
+            userDAO.insertUserEntry(user);
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public UserInfoEntity getUserInfoById(UserInfoEntity userInfoEntity){
+        return  userDAO.getUserInfoByEntity(userInfoEntity);
+    }
+
+    public boolean updateUserInfo(UserInfoEntity userInfoEntity){
+        return userDAO.updateUserInfo(userInfoEntity) == 1;
     }
 }
