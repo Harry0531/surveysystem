@@ -16,7 +16,7 @@ public class Usertest {
     @Test
     void testRegister(){
         UserEntity userEntity = new UserEntity();
-        userEntity.setUserName("1120171192");
+        userEntity.setUsername("1120171192");
         userEntity.setEmail("997009553@qq.com");
         userEntity.setPassword("password");
         userEntity.setRole("student");

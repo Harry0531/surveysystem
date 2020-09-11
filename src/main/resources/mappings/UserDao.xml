@@ -26,16 +26,16 @@
      </resultMap>
 
     <select id="getUserNumberByName" resultType="int">
-        select count(*) from sys_user where `username`=#{userName}
+        select count(*) from sys_user where `username`=#{username}
     </select>
     <select id="getPasswordByName" resultType="java.lang.String">
-        select password from sys_user where `username`=#{userName}
+        select password from sys_user where `username`=#{username}
     </select>
     <insert id="insertUserEntry" parameterType="bit.ss.surveysystem.modules.sys.Entity.UserEntity">
         insert into sys_user
         (`id`,`username`,`password`,`registertime`,`lastlogintime`,`email`,`role`)
         values
-        (#{id},#{userName},#{password},#{registerTime},#{lastLoginTime},#{email},#{role})
+        (#{id},#{username},#{password},#{registerTime},#{lastLoginTime},#{email},#{role})
     </insert>
     <update id="updateLoginTime" parameterType="bit.ss.surveysystem.modules.sys.Entity.UserEntity">
         update sys_user set `lastlogintime`=#{lastLoginTime} where `userid`=#{id}

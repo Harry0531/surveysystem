@@ -47,9 +47,7 @@
             <if test="page.searchKey != '' and page.searchKey != null">
                 and   a.`dic_property`=#{page.searchKey}
             </if>
-            <if test="1 == 1 ">
-                del_flag != 1
-            </if>
+
         </where>
         ORDER BY a.`sort` DESC
         limit #{page.pageStart}, #{page.pageSize}

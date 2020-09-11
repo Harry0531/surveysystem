@@ -22,9 +22,9 @@ public class UserService {
     }
 
     public String login(UserEntity user) {
-        if (userDAO.getUserNumberByName(user.getUserName()) == 0)
+        if (userDAO.getUserNumberByName(user.getUsername()) == 0)
             return "User not exist";
-        if (userDAO.getPasswordByName(user.getUserName()).equals(user.getPassword())) {
+        if (userDAO.getPasswordByName(user.getUsername()).equals(user.getPassword())) {
             user.setLastLoginTime(new Date());
             userDAO.updateLoginTime(user);
             return "Success";
@@ -34,12 +34,12 @@ public class UserService {
 
 
     public boolean register(UserEntity user) {
-        if (!isNameUnused(user.getUserName()))
+        if (!isNameUnused(user.getUsername()))
             return false;
         user.preInsert();
         UserInfoEntity userInfoEntity = new UserInfoEntity();
         userInfoEntity.setId(user.getId());
-        userInfoEntity.setAdmissionNumber(user.getUserName());
+        userInfoEntity.setAdmissionNumber(user.getUsername());
         try{
             userDAO.insertUserInfoEntry(userInfoEntity);
             userDAO.insertUserEntry(user);

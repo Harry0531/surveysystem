@@ -10,7 +10,7 @@ import java.util.UUID;
 @Data
 public class UserEntity extends DataEntity<UserEntity> {
     private String  id;
-    private String userName;
+    private String username;
     private String password;
     private String email;
     private Date registerTime;

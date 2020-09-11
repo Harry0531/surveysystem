@@ -22,7 +22,7 @@ public class SurveyService {
         return surveyEntities;
     }
 
-    public int insertSurvey(SurveyEntity surveyEntity){
+    public int insertorUpdateSurvey(SurveyEntity surveyEntity){
         try {
             mongoTemplate.save(surveyEntity);
             return 1;

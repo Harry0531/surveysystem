@@ -10,7 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/api/user")
+@RequestMapping("/api/sys/user")
 public class UserController extends BaseApi {
     @Autowired
     private UserService userService;
