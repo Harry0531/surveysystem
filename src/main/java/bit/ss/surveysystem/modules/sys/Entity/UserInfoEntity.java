@@ -26,5 +26,8 @@ public class UserInfoEntity {
     private Integer tiqianpi;//提前批
     private Integer signed;//已签约
 
+    private Integer model;//高考模式
+    private String subject;//高考科目
+
 
 }

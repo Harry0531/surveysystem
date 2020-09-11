@@ -9,7 +9,7 @@
         <result column="ranking_section" jdbcType="VARCHAR" property="rankingSection" />
         <result column="contact" jdbcType="VARCHAR" property="contact" />
         <result column="alternate_contact" jdbcType="VARCHAR" property="alternateContact" />
-        <result column="student_name" jdbcType="VARCHAR" property="student_name" />
+        <result column="student_name" jdbcType="VARCHAR" property="studentName" />
         <result column="province" jdbcType="VARCHAR" property="province" />
         <result column="city" jdbcType="VARCHAR" property="city" />
         <result column="address" jdbcType="VARCHAR" property="address" />
@@ -23,6 +23,8 @@
         <result column="tiqianpi" jdbcType="INTEGER" property="tiqianpi"/>
         <result column="signed" jdbcType="INTEGER" property="signed"/>
         <result column="year" jdbcType="INTEGER" property="year"/>
+        <result column="model" jdbcType="INTEGER" property="model"/>
+        <result column="subject" jdbcType="VARCHAR" property="subject" />
      </resultMap>
 
     <select id="getUserNumberByName" resultType="int">
@@ -64,7 +66,9 @@
             `tiqianpi`=#{tiqianpi},
             `signed`=#{signed},
             `year`=#{year},
-            `admission_number`=#{admissionNumber}
+            `admission_number`=#{admissionNumber},
+            `model`=#{model},
+            `subject`=#{subject}
         where `id`=#{id}
     </update>
 

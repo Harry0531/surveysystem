@@ -9,6 +9,10 @@ import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,12 +23,15 @@ public class SurveyTest {
     @Autowired
     SurveyService surveyService;
 
+    @Autowired
+    MongoTemplate mongoTemplate;
     @Test
     void testInsertOrUpdateSurvey(){
         SurveyEntity surveyEntity = new SurveyEntity();
 
+        surveyEntity.setId("05b65a4ee1644f32b2bbfab0f3861620");
         surveyEntity.setOwnerId("2bcdd55957804be38f99e770fbfd8a20");
-        surveyEntity.setTitle("测试问卷");
+        surveyEntity.setTitle("更细成功了嘛");
         surveyEntity.setDescription("这是一个测试问卷");
         surveyEntity.setEnable(0);
 
@@ -52,6 +59,15 @@ public class SurveyTest {
 
         surveyEntity.setQuestions(questionEntities);
 
+
         surveyService.insertorUpdateSurvey(surveyEntity);
+    }
+
+    @Test
+    void testFindSurvey(){
+        Query query = new Query();
+        query.addCriteria(Criteria.where("id").is("aeacba5d546d415ca546ad318be52cb9"));
+        SurveyEntity surveyEntity = mongoTemplate.findOne(query,SurveyEntity.class);
+        System.out.println(surveyEntity);
     }
 }

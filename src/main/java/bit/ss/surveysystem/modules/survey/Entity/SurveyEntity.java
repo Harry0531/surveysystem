@@ -1,10 +1,13 @@
 package bit.ss.surveysystem.modules.survey.Entity;
 
+import bit.ss.surveysystem.common.utils.IdGen;
 import bit.ss.surveysystem.modules.survey.Entity.Ques.QuestionEntity;
 import lombok.Data;
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import javax.persistence.FieldResult;
 import javax.persistence.Id;
 import java.util.Date;
 import java.util.List;
@@ -28,7 +31,12 @@ public class SurveyEntity {
 
     private List<QuestionEntity> questions;//问题列表
 
+    @Field("start_time")
     private Date startTime;//问卷开始填写时间
-
+    @Field("end_time")
     private Date endTime;//问卷结束填写时间
+
+    public  void preInsert(){
+        this.id = IdGen.uuid();
+    }
 }

@@ -1,5 +1,6 @@
 package bit.ss.surveysystem.modules.survey.Entity.Ques;
 
+import bit.ss.surveysystem.common.utils.IdGen;
 import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -36,4 +37,7 @@ public class QuestionEntity {
     @Field("skip_logic")
     private List<SkipLogic>skipLogices;//跳题逻辑
 
+    public  void preInsert(){
+        this.id = IdGen.uuid();
+    }
 }
