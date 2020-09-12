@@ -18,18 +18,25 @@ public class UserService {
     private UserDAO userDAO;
 
     public boolean isNameUnused(String userName) {
-        return userDAO.getUserNumberByName(userName) == 0;
+        UserEntity userEntity = userDAO.getUserByName(userName);
+
+        return  userEntity != null;
     }
 
-    public String login(UserEntity user) {
-        if (userDAO.getUserNumberByName(user.getUsername()) == 0)
-            return "User not exist";
+    public UserEntity login(UserEntity user) {
+        UserEntity userId = userDAO.getUserByName(user.getUsername());
+
+        if ( userId == null) {
+            return null;
+        }
         if (userDAO.getPasswordByName(user.getUsername()).equals(user.getPassword())) {
             user.setLastLoginTime(new Date());
             userDAO.updateLoginTime(user);
-            return "Success";
-        } else
-            return "Wrong password";
+            return userId;
+        } else{
+            return null;
+        }
+
     }
 
 

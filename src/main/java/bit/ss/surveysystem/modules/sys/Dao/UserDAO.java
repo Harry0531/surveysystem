@@ -2,9 +2,10 @@ package bit.ss.surveysystem.modules.sys.Dao;
 
 import bit.ss.surveysystem.modules.sys.Entity.UserEntity;
 import bit.ss.surveysystem.modules.sys.Entity.UserInfoEntity;
+import org.apache.catalina.User;
 
 public interface UserDAO {
-    int getUserNumberByName(String userName);
+    UserEntity getUserByName(String userName);
     String getPasswordByName(String userName);
 
     int insertUserEntry(UserEntity user);

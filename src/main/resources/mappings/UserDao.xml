@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="bit.ss.surveysystem.modules.sys.Dao.UserDAO">
     <resultMap id="BaseResultMap" type="bit.ss.surveysystem.modules.sys.Entity.UserInfoEntity">
-        <id column="id" jdbcType="INTEGER" property="id" />
+        <id column="id" jdbcType="VARCHAR" property="id" />
 
         <result column="name" jdbcType="VARCHAR" property="name" />
         <result column="admission_number" jdbcType="VARCHAR" property="admissionNumber" />
@@ -27,8 +27,18 @@
         <result column="subject" jdbcType="VARCHAR" property="subject" />
      </resultMap>
 
-    <select id="getUserNumberByName" resultType="int">
-        select count(*) from sys_user where `username`=#{username}
+
+    <resultMap id="UserMap" type="bit.ss.surveysystem.modules.sys.Entity.UserEntity">
+        <id column="id" jdbcType="VARCHAR" property="id" />
+        <result column="username" jdbcType="VARCHAR" property="username" />
+        <result column="password" jdbcType="VARCHAR" property="password" />
+        <result column="email" jdbcType="VARCHAR" property="email" />
+        <result column="role" jdbcType="VARCHAR" property="role" />
+        <result column="registertime" jdbcType="TIMESTAMP" property="registerTime" />
+        <result column="lastlogintime" jdbcType="TIMESTAMP" property="lastLoginTime" />
+    </resultMap>
+    <select id="getUserByName" parameterType="java.lang.String" resultMap="UserMap">
+        select * from sys_user where `username`=#{username}
     </select>
     <select id="getPasswordByName" resultType="java.lang.String">
         select password from sys_user where `username`=#{username}

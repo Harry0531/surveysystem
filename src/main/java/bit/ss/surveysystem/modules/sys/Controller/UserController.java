@@ -32,8 +32,13 @@ public class UserController extends BaseApi {
     @ResponseBody
     public Object login(@RequestBody UserEntity user) {
         try {
-            String result = userService.login(user);
-            return retMsg.Set(MsgType.SUCCESS, result);
+            UserEntity result = userService.login(user);
+            if (result!= null){
+                return retMsg.Set(MsgType.SUCCESS, result);
+            }
+             else{
+                return retMsg.Set(MsgType.ERROR, "不存在此用户");
+                }
         } catch (Exception e) {
             e.printStackTrace();
             return retMsg.Set(MsgType.ERROR, e.toString());
