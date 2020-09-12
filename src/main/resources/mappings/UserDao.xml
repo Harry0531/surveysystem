@@ -40,7 +40,7 @@
         (#{id},#{username},#{password},#{registerTime},#{lastLoginTime},#{email},#{role})
     </insert>
     <update id="updateLoginTime" parameterType="bit.ss.surveysystem.modules.sys.Entity.UserEntity">
-        update sys_user set `lastlogintime`=#{lastLoginTime} where `userid`=#{id}
+        update sys_user set `lastlogintime`=#{lastLoginTime} where `id`=#{id}
     </update>
 
 
