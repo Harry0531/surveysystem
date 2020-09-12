@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.data.querydsl.QuerydslRepositoryInvokerAdapter;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,10 +19,21 @@ public class SurveyService {
     private MongoTemplate mongoTemplate;
 
     public List<SurveyEntity> selectSurveyByOwnerId(String ownerId){
-        Query query = Query.query(Criteria.where("ownerid").is(ownerId));
+        Query query = Query.query(Criteria.where("owner_id").is(ownerId));
         List<SurveyEntity> surveyEntities = mongoTemplate.find(query,SurveyEntity.class,"suit");
         return surveyEntities;
     }
+
+    public List<SurveyEntity> selectSurveyByRespondentId(String id){
+        //查询id
+        Query query = Query.query(Criteria.where("respondent_id").is(id));
+        List<AnsSurveyEntity> ansSurveyEntities = mongoTemplate.find(query,AnsSurveyEntity.class,"ans");
+//        for(AnsSurveyEntity ansSurveyEntity:ansSurveyEntities){
+//
+//        }
+        return null;
+    }
+
 
     public int insertorUpdateSurvey(SurveyEntity surveyEntity){
         try {
@@ -55,6 +67,8 @@ public class SurveyService {
         return 1;
     }
 
+
+
     public int insertorUpdateAnswer(AnsSurveyEntity ansSurveyEntity){
         try {
             if(ansSurveyEntity.getId()==null){
@@ -76,9 +90,17 @@ public class SurveyService {
         }
     }
 
-    public List<AnsSurveyEntity> selectAnswerBySurveyId(SurveyEntity surveyEntity){
+    public List<AnsSurveyEntity> selectAnswerBySurveyIdAndpersonId(AnsSurveyEntity ansSurveyEntity){
             Query query = new Query();
-            query.addCriteria(Criteria.where("survey_id").is(surveyEntity.getId()));
+            if(ansSurveyEntity.getId()!=null){
+                query.addCriteria(Criteria.where("survey_id").is(ansSurveyEntity.getId()));
+            }
+           if(ansSurveyEntity.getRespondentId()!=null){
+               query.addCriteria(Criteria.where("respondent_id").is(ansSurveyEntity.getRespondentId()));
+           }
+
             return mongoTemplate.find(query,AnsSurveyEntity.class,"ans");
     }
+
+
 }

@@ -19,9 +19,9 @@ public class UserController extends BaseApi {
     @ResponseBody
     public Object isNameUnused(@RequestParam("userName") String userName) {
         try {
-            if (userService.isNameUnused(userName))
+            if (userService.isNameUsed(userName))
                 return retMsg.Set(MsgType.SUCCESS, true);
-            return retMsg.Set(MsgType.SUCCESS, false);
+            return retMsg.Set(MsgType.ERROR, false);
         } catch (Exception e) {
             e.printStackTrace();
             return retMsg.Set(MsgType.ERROR, e.toString());

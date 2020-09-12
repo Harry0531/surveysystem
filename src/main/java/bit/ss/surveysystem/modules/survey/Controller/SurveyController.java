@@ -3,6 +3,7 @@ package bit.ss.surveysystem.modules.survey.Controller;
 import bit.ss.surveysystem.common.persistence.Page;
 import bit.ss.surveysystem.common.web.BaseApi;
 import bit.ss.surveysystem.common.web.MsgType;
+import bit.ss.surveysystem.modules.survey.Entity.Ans.AnsSurveyEntity;
 import bit.ss.surveysystem.modules.survey.Entity.SurveyEntity;
 import bit.ss.surveysystem.modules.survey.Service.SurveyService;
 import bit.ss.surveysystem.modules.sys.Entity.Dict;
@@ -28,6 +29,18 @@ public class SurveyController extends BaseApi {
     public Object createSurvey(@RequestBody SurveyEntity surveyEntity)throws Exception {
         try{
             surveyService.insertorUpdateSurvey(surveyEntity);
+            return retMsg.Set(MsgType.SUCCESS);
+        }catch (Exception e){
+            e.printStackTrace();
+            return retMsg.Set(MsgType.ERROR);
+        }
+    }
+
+    @RequestMapping(value="insertOrUpdateAnswer",method = RequestMethod.POST)
+    @ResponseBody
+    public Object insertOrUpdateAnswer(@RequestBody AnsSurveyEntity ansSurveyEntity)throws Exception {
+        try{
+
             return retMsg.Set(MsgType.SUCCESS);
         }catch (Exception e){
             e.printStackTrace();

@@ -5,21 +5,17 @@ import bit.ss.surveysystem.modules.sys.Entity.UserEntity;
 import bit.ss.surveysystem.modules.sys.Entity.UserInfoEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 
-import java.lang.reflect.Field;
 import java.util.Date;
-import java.util.List;
 
 @Service
 public class UserService {
     @Autowired
     private UserDAO userDAO;
 
-    public boolean isNameUnused(String userName) {
+    public boolean isNameUsed(String userName) {
         UserEntity userEntity = userDAO.getUserByName(userName);
-
         return  userEntity != null;
     }
 
@@ -41,7 +37,7 @@ public class UserService {
 
 
     public boolean register(UserEntity user) {
-        if (!isNameUnused(user.getUsername()))
+        if (isNameUsed(user.getUsername()))
             return false;
         user.preInsert();
         UserInfoEntity userInfoEntity = new UserInfoEntity();
