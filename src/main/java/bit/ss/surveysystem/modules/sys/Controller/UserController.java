@@ -37,7 +37,7 @@ public class UserController extends BaseApi {
                 return retMsg.Set(MsgType.SUCCESS, result);
             }
              else{
-                return retMsg.Set(MsgType.ERROR, "不存在此用户");
+                return retMsg.Set(MsgType.SUCCESS, "不存在此用户");
                 }
         } catch (Exception e) {
             e.printStackTrace();
