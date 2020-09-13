@@ -20,7 +20,7 @@ public class SurveyService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    public List<SurveyEntity> selectSurveyByCondition(SurveyEntity surveyEntity){
+    public List<SurveyEntity> selectSurveyByConditions(SurveyEntity surveyEntity){
         Query query = new Query();
         System.out.println("id");
         System.out.println(surveyEntity.getTitle());
@@ -40,15 +40,6 @@ public class SurveyService {
         return mongoTemplate.find(query,SurveyEntity.class,"suit");
     }
 
-//    public List<SurveyEntity> selectSurveyByRespondentId(SurveyEntity surveyEntity){
-//        //查询id
-//        Query query = Query.query(Criteria.where("respondent_id").is());
-//        List<AnsSurveyEntity> ansSurveyEntities = mongoTemplate.find(query,AnsSurveyEntity.class,"ans");
-////        for(AnsSurveyEntity ansSurveyEntity:ansSurveyEntities){
-////
-////        }
-//        return null;
-//    }
 
 
     public int postSurvey(SurveyEntity surveyEntity){
@@ -98,7 +89,7 @@ public class SurveyService {
 
     public int deleteSurveyById(SurveyEntity surveyEntity){
         Query query = Query.query(Criteria.where("id").is(surveyEntity.getId()));
-        mongoTemplate.remove(query,SurveyEntity.class);
+        mongoTemplate.remove(query,SurveyEntity.class,"suit");
         return 1;
     }
 
@@ -125,17 +116,24 @@ public class SurveyService {
         }
     }
 
-    public List<AnsSurveyEntity> selectAnswerBySurveyIdAndpersonId(AnsSurveyEntity ansSurveyEntity){
+    public List<AnsSurveyEntity> selectAnswerByConditions(AnsSurveyEntity ansSurveyEntity){
             Query query = new Query();
             if(ansSurveyEntity.getId()!=null){
-                query.addCriteria(Criteria.where("survey_id").is(ansSurveyEntity.getId()));
+                query.addCriteria(Criteria.where("id").is(ansSurveyEntity.getId()));
             }
            if(ansSurveyEntity.getRespondentId()!=null){
                query.addCriteria(Criteria.where("respondent_id").is(ansSurveyEntity.getRespondentId()));
            }
-
+            if(ansSurveyEntity.getSurveyId()!=null){
+                query.addCriteria(Criteria.where("survey_id").is(ansSurveyEntity.getSurveyId()));
+            }
             return mongoTemplate.find(query,AnsSurveyEntity.class,"ans");
     }
 
+    public int deleteAnswer(AnsSurveyEntity ansSurveyEntity){
+        Query query = Query.query(Criteria.where("id").is(ansSurveyEntity.getId()));
+        mongoTemplate.remove(query,AnsSurveyEntity.class,"ans");
+        return 1;
+    }
 
 }

@@ -1,6 +1,9 @@
 package bit.ss.surveysystem;
 
+import bit.ss.surveysystem.common.utils.IdGen;
 import bit.ss.surveysystem.modules.survey.Controller.SurveyController;
+import bit.ss.surveysystem.modules.survey.Entity.Ans.AnsSurveyEntity;
+import bit.ss.surveysystem.modules.survey.Entity.Ans.AnswerEntity;
 import bit.ss.surveysystem.modules.survey.Entity.Ques.QuestionEntity;
 import bit.ss.surveysystem.modules.survey.Entity.Ques.QuestionType;
 import bit.ss.surveysystem.modules.survey.Entity.SurveyEntity;
@@ -62,17 +65,17 @@ public class SurveyTest {
     @Test
     void testInsertOrUpdateSurvey(){
         SurveyEntity surveyEntity = new SurveyEntity();
+        surveyEntity.preInsert();
 
-        surveyEntity.setId("05b65a4ee1644f32b2bbfab0f3861620");
         surveyEntity.setOwnerId("2bcdd55957804be38f99e770fbfd8a20");
-        surveyEntity.setTitle("修改是否成功");
+        surveyEntity.setTitle("测试问卷1");
         surveyEntity.setDescription("这是一个测试问卷");
         surveyEntity.setEnable(0);
 
         List<QuestionEntity> questionEntities = new ArrayList<>();
 
         QuestionEntity q1 = new QuestionEntity();
-        q1.setId(new ObjectId().toString());
+        q1.setId(IdGen.uuid());
         q1.setTitle("你是谁");
         q1.setIndex(1);
         q1.setType(QuestionType.FillBlank);
@@ -82,7 +85,7 @@ public class SurveyTest {
 
 
         QuestionEntity q2 = new QuestionEntity();
-        q2.setId(new ObjectId().toString());
+        q2.setId(IdGen.uuid());
         q2.setTitle("你来自哪个年级");
         q2.setIndex(2);
         q2.setType(QuestionType.MultipleChoice);
@@ -160,6 +163,38 @@ public class SurveyTest {
                     .andExpect(status().isOk())
                     .andDo(print())
                     .andReturn().getResponse().getContentAsString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    void testInsertOrUpdateAns(){
+        AnsSurveyEntity ansSurveyEntity = new AnsSurveyEntity();
+        ansSurveyEntity.preInsert();
+        ansSurveyEntity.setSurveyId("556549479e1f45feba4a5edb88c0f1ad");
+        ansSurveyEntity.setRespondentId("1120171192");
+
+        List<AnswerEntity> answerEntities = new ArrayList<>();
+
+        AnswerEntity a1 = new AnswerEntity();
+        a1.setAnswer("张佳明");
+        a1.setQuestionId("f7c02b1889fb4692881d6f3cf3ab95a7");
+
+        AnswerEntity a2 = new AnswerEntity();
+        a2.setAnswer("大三");
+        a2.setQuestionId("ac2efd24f3834a15a0cb446d86a14c46");
+
+        answerEntities.add(a1);
+        answerEntities.add(a2);
+        ansSurveyEntity.setAnsList(answerEntities);
+
+        try {
+            mockMvc.perform(MockMvcRequestBuilders.post("/api/survey/insertOrUpdateAnswer")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .content(JSON.toJSONString(ansSurveyEntity).getBytes()))
+                    .andDo(print());
         } catch (Exception e) {
             e.printStackTrace();
         }

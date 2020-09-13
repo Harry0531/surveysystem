@@ -36,10 +36,9 @@
         from sys_dict a
         LEFT JOIN sys_dict c on a.father=c.id
         <where>
-            <if test="page.searchKey != '' and page.searchKey != null">
-                and   a.`dic_property`=#{page.searchKey}
+            <if test="dicProperty != '' and dicProperty != null">
+                and   a.`dic_property`=#{dicProperty}
             </if>
-
         </where>
         ORDER BY a.`sort` DESC
         limit #{page.pageStart}, #{page.pageSize}

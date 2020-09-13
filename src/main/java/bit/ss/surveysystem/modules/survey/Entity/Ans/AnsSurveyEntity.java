@@ -20,7 +20,7 @@ public class AnsSurveyEntity {
     private String surveyId;//问卷Id
 
     @Field("ans_list")
-    private List<AnsSurveyEntity> ansList;
+    private List<AnswerEntity> ansList;
     public  void preInsert(){
         this.id = IdGen.uuid();
     }

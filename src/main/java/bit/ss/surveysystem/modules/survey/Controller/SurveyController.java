@@ -51,7 +51,7 @@ public class SurveyController extends BaseApi {
     @ResponseBody
     public Object getSurveyById(@RequestBody SurveyEntity surveyEntity)throws Exception {
         try{
-            List<SurveyEntity> surveyEntities = surveyService.selectSurveyByCondition(surveyEntity);
+            List<SurveyEntity> surveyEntities = surveyService.selectSurveyByConditions(surveyEntity);
             return retMsg.Set(MsgType.SUCCESS,surveyEntities);
         }catch (Exception e){
             e.printStackTrace();
@@ -93,14 +93,40 @@ public class SurveyController extends BaseApi {
     @ResponseBody
     public Object insertOrUpdateAnswer(@RequestBody AnsSurveyEntity ansSurveyEntity)throws Exception {
         try{
-
-            return retMsg.Set(MsgType.SUCCESS);
+            if(surveyService.insertorUpdateAnswer(ansSurveyEntity) ==1){
+                return  retMsg.Set(MsgType.SUCCESS);
+            }
+            return retMsg.Set(MsgType.WARNING,"未更新任何数据");
         }catch (Exception e){
             e.printStackTrace();
             return retMsg.Set(MsgType.ERROR);
         }
     }
 
+    @RequestMapping(value="deleteAnswer",method = RequestMethod.POST)
+    @ResponseBody
+    public Object deleteAnswer(@RequestBody AnsSurveyEntity ansSurveyEntity)throws Exception {
+        try{
+            if(surveyService.deleteAnswer(ansSurveyEntity) ==1){
+                return  retMsg.Set(MsgType.SUCCESS);
+            }
+            return retMsg.Set(MsgType.WARNING,"未更新任何数据");
+        }catch (Exception e){
+            e.printStackTrace();
+            return retMsg.Set(MsgType.ERROR);
+        }
+    }
+    @RequestMapping(value="getAnswerByConditions",method = RequestMethod.POST)
+    @ResponseBody
+    public Object getAnswerByConditions(@RequestBody AnsSurveyEntity ansSurveyEntity)throws Exception {
+        try{
+            List<AnsSurveyEntity> ansSurveyEntities = surveyService.selectAnswerByConditions(ansSurveyEntity);
+            return retMsg.Set(MsgType.SUCCESS,ansSurveyEntities);
+        }catch (Exception e){
+            e.printStackTrace();
+            return retMsg.Set(MsgType.ERROR);
+        }
+    }
 
 
 }
