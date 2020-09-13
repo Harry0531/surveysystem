@@ -63,15 +63,21 @@ public class DictController extends BaseApi {
     @RequestMapping(value = "insertOrUpdateDict",method = RequestMethod.POST)
     @ResponseBody
     public Object insertOrUpdateDict(@RequestBody Dict dict)throws Exception {
-        if(dict.getId().equals("")||dict.getId()==null){
-            if(dictService.insertDict(dict))
-                return retMsg.Set(MsgType.SUCCESS);
-            else return retMsg.Set(MsgType.ERROR);
-        }else{
-            if(dictService.updateDict(dict))
-                return retMsg.Set(MsgType.SUCCESS);
-            else return retMsg.Set(MsgType.ERROR);
+        try{
+            if(dict.getId().equals("")||dict.getId()==null){
+                if(dictService.insertDict(dict))
+                    return retMsg.Set(MsgType.SUCCESS);
+                else return retMsg.Set(MsgType.WARNING,"未更新任何数据");
+            }else{
+                if(dictService.updateDict(dict))
+                    return retMsg.Set(MsgType.SUCCESS);
+                else return retMsg.Set(MsgType.WARNING,"未更新任何数据");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return  retMsg.Set(MsgType.ERROR);
         }
+
 
     }
 
@@ -82,7 +88,7 @@ public class DictController extends BaseApi {
             if(dictService.deleteDictByIds(dicts)){
                 return retMsg.Set(MsgType.SUCCESS);
             }else
-                return retMsg.Set(MsgType.ERROR);
+                return retMsg.Set(MsgType.WARNING,"未更新任何数据");
         }catch (Exception e){
             e.printStackTrace();
             return retMsg.Set(MsgType.ERROR);
@@ -98,7 +104,7 @@ public class DictController extends BaseApi {
             if(dictService.deleteDictById(dict)){
                 return retMsg.Set(MsgType.SUCCESS);
             }else
-                return retMsg.Set(MsgType.ERROR);
+                return retMsg.Set(MsgType.WARNING,"未更新任何数据");
         }catch (Exception e){
             e.printStackTrace();
             return retMsg.Set(MsgType.ERROR);

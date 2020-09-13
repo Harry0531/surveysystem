@@ -18,22 +18,24 @@ public class SurveyService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    public List<SurveyEntity> selectSurveyByOwnerId(String ownerId){
-        Query query = Query.query(Criteria.where("owner_id").is(ownerId));
-        List<SurveyEntity> surveyEntities = mongoTemplate.find(query,SurveyEntity.class,"suit");
-        return surveyEntities;
+    public List<SurveyEntity> selectSurveyByOwnerId(SurveyEntity surveyEntity){
+        Query query = Query.query(Criteria.where("owner_id").is(surveyEntity.getOwnerId()));
+        return mongoTemplate.find(query,SurveyEntity.class,"suit");
     }
 
-    public List<SurveyEntity> selectSurveyByRespondentId(String id){
-        //查询id
-        Query query = Query.query(Criteria.where("respondent_id").is(id));
-        List<AnsSurveyEntity> ansSurveyEntities = mongoTemplate.find(query,AnsSurveyEntity.class,"ans");
-//        for(AnsSurveyEntity ansSurveyEntity:ansSurveyEntities){
-//
-//        }
-        return null;
-    }
+//    public List<SurveyEntity> selectSurveyByRespondentId(SurveyEntity surveyEntity){
+//        //查询id
+//        Query query = Query.query(Criteria.where("respondent_id").is());
+//        List<AnsSurveyEntity> ansSurveyEntities = mongoTemplate.find(query,AnsSurveyEntity.class,"ans");
+////        for(AnsSurveyEntity ansSurveyEntity:ansSurveyEntities){
+////
+////        }
+//        return null;
+//    }
 
+    public String postSurvey(SurveyEntity surveyEntity){
+
+    }
 
     public int insertorUpdateSurvey(SurveyEntity surveyEntity){
         try {
@@ -59,6 +61,18 @@ public class SurveyService {
             return -1;
         }
 
+    }
+
+    public int copySurvey(SurveyEntity surveyEntity){
+        Query query = new Query();
+        query.addCriteria(Criteria.where("id").is(surveyEntity.getId()));
+        SurveyEntity surveyEntity_old = mongoTemplate.findOne(query,SurveyEntity.class,"suit");
+        if(surveyEntity_old!=null){
+            surveyEntity_old.preInsert();
+            mongoTemplate.save(surveyEntity_old);
+            return 1;
+        }
+        return -1;
     }
 
     public int deleteSurveyById(SurveyEntity surveyEntity){

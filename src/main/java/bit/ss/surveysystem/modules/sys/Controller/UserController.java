@@ -17,11 +17,11 @@ public class UserController extends BaseApi {
 
     @RequestMapping(value = "isNameUsed", method = RequestMethod.POST)
     @ResponseBody
-    public Object isNameUnused(@RequestParam("userName") String userName) {
+    public Object isNameUnused(@RequestParam("username") String username) {
         try {
-            if (userService.isNameUsed(userName))
+            if (userService.isNameUsed(username))
                 return retMsg.Set(MsgType.SUCCESS, true);
-            return retMsg.Set(MsgType.ERROR, false);
+                return retMsg.Set(MsgType.SUCCESS, false);
         } catch (Exception e) {
             e.printStackTrace();
             return retMsg.Set(MsgType.ERROR, e.toString());

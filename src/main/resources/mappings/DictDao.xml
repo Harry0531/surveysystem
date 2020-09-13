@@ -17,11 +17,6 @@
     <select id="selectDictTypeList" resultType="String">
       select `dic_property`
       from sys_dict
-      <where>
-          <if test="1 == 1 ">
-              del_flag != 1
-          </if>
-      </where>
       group by `dic_property`
     </select>
 
@@ -30,9 +25,6 @@
         <where>
             <if test="page.searchKey != '' and page.searchKey != null">
                 and a.dic_property like concat('%', #{page.searchKey}, '%')
-            </if>
-            <if test="1 == 1 ">
-                del_flag != 1
             </if>
         </where>
     </select>
@@ -76,14 +68,14 @@
     </insert>
 
     <update id="deleteDictByIds" parameterType="bit.ss.surveysystem.modules.sys.Entity.Dict">
-        update sys_dict set `del_flag`=1-`del_flag` where id in
+        delete from  sys_dict  where id in
         <foreach collection="list" item="item" open="(" close=")" separator=",">
             #{item.id}
         </foreach>
     </update>
 
     <update id="deleteDictById" parameterType="bit.ss.surveysystem.modules.sys.Entity.Dict">
-        update `sys_dict` set `del_flag`=1-`del_flag` where `id`=#{id}
+        delete from sys_dict where `id`=#{id}
     </update>
 
     <update id="updateDict" parameterType="bit.ss.surveysystem.modules.sys.Entity.Dict">
