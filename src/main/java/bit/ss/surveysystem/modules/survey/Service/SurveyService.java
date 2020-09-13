@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.data.querydsl.QuerydslRepositoryInvokerAdapter;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -33,8 +34,12 @@ public class SurveyService {
 //        return null;
 //    }
 
-    public String postSurvey(SurveyEntity surveyEntity){
 
+    public int postSurvey(SurveyEntity surveyEntity){
+        Query query = Query.query(Criteria.where("id").is(surveyEntity.getId()));
+        Update update = Update.update("start_time",new Date());
+        mongoTemplate.updateMulti(query,update,"suit");
+        return 1;
     }
 
     public int insertorUpdateSurvey(SurveyEntity surveyEntity){

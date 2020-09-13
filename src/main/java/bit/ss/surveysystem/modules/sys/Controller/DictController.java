@@ -64,7 +64,7 @@ public class DictController extends BaseApi {
     @ResponseBody
     public Object insertOrUpdateDict(@RequestBody Dict dict)throws Exception {
         try{
-            if(dict.getId().equals("")||dict.getId()==null){
+            if("".equals(dict.getId())||dict.getId()==null){
                 if(dictService.insertDict(dict))
                     return retMsg.Set(MsgType.SUCCESS);
                 else return retMsg.Set(MsgType.WARNING,"未更新任何数据");
