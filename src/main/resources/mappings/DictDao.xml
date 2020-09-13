@@ -26,6 +26,9 @@
             <if test="dicProperty != '' and dicProperty != null">
                 and   a.`dic_property`=#{dicProperty}
             </if>
+            <if test="dicValue != '' and dicValue != null">
+                and   a.`dicValue`=#{dicValue}
+            </if>
             <if test="page.searchKey != '' and page.searchKey != null">
                 and a.dic_property like concat('%', #{page.searchKey}, '%')
             </if>
@@ -41,6 +44,9 @@
         <where>
             <if test="dicProperty != '' and dicProperty != null">
                 and   a.`dic_property`=#{dicProperty}
+            </if>
+            <if test="dicValue != '' and dicValue != null">
+                and   a.`dicValue`=#{dicValue}
             </if>
             <if test="page.searchKey != '' and page.searchKey != null">
                 and a.dic_property like concat('%', #{page.searchKey}, '%')
