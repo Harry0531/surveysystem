@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Service
 public class SurveyService {
@@ -19,8 +20,23 @@ public class SurveyService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    public List<SurveyEntity> selectSurveyByOwnerId(SurveyEntity surveyEntity){
-        Query query = Query.query(Criteria.where("owner_id").is(surveyEntity.getOwnerId()));
+    public List<SurveyEntity> selectSurveyByCondition(SurveyEntity surveyEntity){
+        Query query = new Query();
+        System.out.println("id");
+        System.out.println(surveyEntity.getTitle());
+        if(surveyEntity.getId()!=null){
+            query.addCriteria(Criteria.where("id").is(surveyEntity.getId()));
+        }
+        if(surveyEntity.getOwnerId()!=null){
+            query.addCriteria(Criteria.where("owner_id").is(surveyEntity.getOwnerId()));
+        }
+        if(surveyEntity.getTitle()!=null){
+            query.addCriteria(Criteria.where("title").regex(Pattern.compile("^.*"+surveyEntity.getTitle()+".*$")));
+        }
+        if(surveyEntity.getDescription()!=null){
+            query.addCriteria(Criteria.where("description").regex(Pattern.compile("^.*"+surveyEntity.getTitle()+".*$")));
+        }
+
         return mongoTemplate.find(query,SurveyEntity.class,"suit");
     }
 

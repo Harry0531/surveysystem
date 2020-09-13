@@ -47,6 +47,18 @@ public class SurveyController extends BaseApi {
         }
     }
 
+    @RequestMapping(value="getSurveyByConditions",method = RequestMethod.POST)
+    @ResponseBody
+    public Object getSurveyById(@RequestBody SurveyEntity surveyEntity)throws Exception {
+        try{
+            List<SurveyEntity> surveyEntities = surveyService.selectSurveyByCondition(surveyEntity);
+            return retMsg.Set(MsgType.SUCCESS,surveyEntities);
+        }catch (Exception e){
+            e.printStackTrace();
+            return retMsg.Set(MsgType.ERROR);
+        }
+    }
+
     @RequestMapping(value="copySurvey",method = RequestMethod.POST)
     @ResponseBody
     public Object copySurvey(@RequestBody SurveyEntity surveyEntity)throws Exception {
