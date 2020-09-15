@@ -44,7 +44,7 @@
 
 
     <insert id="insertConfig" parameterType="bit.ss.surveysystem.modules.sys.Entity.ConfigEntity" >
-        insert into sys_dict (
+        insert into sys_config (
         `id`,
         `sort`,
         `config_key`,

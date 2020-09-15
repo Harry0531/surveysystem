@@ -22,8 +22,7 @@ public class SurveyService {
 
     public List<SurveyEntity> selectSurveyByConditions(SurveyEntity surveyEntity){
         Query query = new Query();
-        System.out.println("id");
-        System.out.println(surveyEntity.getTitle());
+
         if(surveyEntity.getId()!=null){
             query.addCriteria(Criteria.where("id").is(surveyEntity.getId()));
         }
