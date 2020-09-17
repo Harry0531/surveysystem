@@ -6,12 +6,12 @@ import bit.ss.surveysystem.modules.survey.Entity.SurveyEntity;
 import bit.ss.surveysystem.modules.survey.Service.DataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 @RequestMapping("api/survey/data")
 @Controller
@@ -31,4 +31,22 @@ public class DataController extends BaseApi {
             return retMsg.Set(MsgType.ERROR);
         }
     }
+
+
+    @RequestMapping(value = "exportSurvey")
+    @ResponseBody
+    public Object exportSurvey(
+            @RequestParam SurveyEntity surveyEntity,
+            HttpServletResponse response
+    ) throws Exception {
+        try {
+            Object result = dataService.getSurveyStatistics(surveyEntity);
+            return retMsg.Set(MsgType.SUCCESS,result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return retMsg.Set(MsgType.ERROR);
+        }
+    }
+
+
 }

@@ -42,4 +42,13 @@ public class SurveyEntity {
     public  void preInsert(){
         this.id = IdGen.uuid();
     }
+
+    public  int getQuestionIndexById(String questionId,Integer extraNum){
+        for(int i=0;i<questions.size();i++){
+            if(questions.get(i).getId().equals(questionId)){
+                return i+extraNum;
+            }
+        }
+        return -1;
+    }
 }
