@@ -29,7 +29,7 @@ public class Usertest {
     void testGetUserInfo(){
         UserInfoEntity userInfoEntity = new UserInfoEntity();
         userInfoEntity.setId("2bcdd55957804be38f99e770fbfd8a20");
-        System.out.println(userService.getUserInfoById(userInfoEntity));
+        System.out.println(userService.getUserInfoByConditions(userInfoEntity));
     }
 
     @Test

@@ -5,6 +5,7 @@ import bit.ss.surveysystem.common.web.MsgType;
 import bit.ss.surveysystem.modules.sys.Entity.UserInfoEntity;
 import bit.ss.surveysystem.modules.sys.Service.UserService;
 import bit.ss.surveysystem.modules.sys.Entity.UserEntity;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -76,8 +77,33 @@ public class UserController extends BaseApi {
     @ResponseBody
     public Object getUserInfo(@RequestBody UserInfoEntity user) {
         try {
-            UserInfoEntity userInfoEntity = userService.getUserInfoById(user);
+            List<UserInfoEntity> userInfoEntity = userService.getUserInfoByConditions(user);
             return retMsg.Set(MsgType.SUCCESS,userInfoEntity);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return retMsg.Set(MsgType.ERROR, e.toString());
+        }
+    }
+
+
+    @RequestMapping(value = "getUser", method = RequestMethod.POST)
+    @ResponseBody
+    public Object getUser(@RequestBody UserEntity user) {
+        try {
+            List<UserEntity> userInfoEntity = userService.getUserByConditions(user);
+            return retMsg.Set(MsgType.SUCCESS,userInfoEntity);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return retMsg.Set(MsgType.ERROR, e.toString());
+        }
+    }
+
+    @RequestMapping(value = "deleteUserByIds", method = RequestMethod.POST)
+    @ResponseBody
+    public Object deleteUserByIds(@RequestBody List<UserEntity> user) {
+        try {
+            userService.deleteUserByIds(user);
+            return retMsg.Set(MsgType.SUCCESS);
         } catch (Exception e) {
             e.printStackTrace();
             return retMsg.Set(MsgType.ERROR, e.toString());

@@ -3,6 +3,7 @@ package bit.ss.surveysystem.modules.sys.Service;
 import bit.ss.surveysystem.modules.sys.Dao.UserDAO;
 import bit.ss.surveysystem.modules.sys.Entity.UserEntity;
 import bit.ss.surveysystem.modules.sys.Entity.UserInfoEntity;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,11 +54,20 @@ public class UserService {
         return true;
     }
 
-    public UserInfoEntity getUserInfoById(UserInfoEntity userInfoEntity){
+    public List<UserInfoEntity> getUserInfoByConditions(UserInfoEntity userInfoEntity){
         return  userDAO.getUserInfoByEntity(userInfoEntity);
     }
 
     public boolean updateUserInfo(UserInfoEntity userInfoEntity){
         return userDAO.updateUserInfo(userInfoEntity) == 1;
+    }
+    
+    public List<UserEntity> getUserByConditions(UserEntity userEntity){
+        return userDAO.getUserByConditions(userEntity);
+    }
+
+    public int deleteUserByIds(List<UserEntity> userEntities){
+        userDAO.deleteUserInfoByIds(userEntities);
+        return userDAO.deleteUserByIds(userEntities);
     }
 }
