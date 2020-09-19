@@ -37,6 +37,9 @@ public class QuestionEntity {
     @Field("skip_logic")
     private List<SkipLogic>skipLogices;//跳题逻辑
 
+    private Integer isPrivate;//是否为隐私项
+    private Integer validation;//是否需要验证
+
     public  void preInsert(){
         this.id = IdGen.uuid();
     }
