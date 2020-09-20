@@ -37,8 +37,11 @@ public class DataService {
     UserService userService;
 
     public List<AnsSurveyEntity> getAnsListByConditions(SearchEntity searchEntity){
-        //获取问卷信息
-        SurveyEntity surveyEntity = surveyService.selectSurveyByConditions(searchEntity.getSurveyEntity()).get(0);
+        List<SurveyEntity> surveyEntities=surveyService.selectSurveyByConditions(searchEntity.getSurveyEntity());
+        if(surveyEntities.size()==0){
+            return null;
+        }
+        SurveyEntity surveyEntity =surveyEntities.get(0);
         //获取所有该问卷的答卷
         AnsSurveyEntity ansSurveyEntity = new AnsSurveyEntity();
         ansSurveyEntity.setSurveyId(surveyEntity.getId());
@@ -159,7 +162,11 @@ public class DataService {
     }
 
     public Object getSurveyStatistics(SearchEntity searchEntity){
-        SurveyEntity surveyEntity = surveyService.selectSurveyByConditions(searchEntity.getSurveyEntity()).get(0);
+        List<SurveyEntity> surveyEntities=surveyService.selectSurveyByConditions(searchEntity.getSurveyEntity());
+        if(surveyEntities.size()==0){
+            return null;
+        }
+        SurveyEntity surveyEntity =surveyEntities.get(0);
         List<AnsSurveyEntity> ansSurveyEntityList = getAnsListByConditions(searchEntity);
         //遍历每个题目进行统计
         HashMap<Integer,Object> result = new HashMap<>();
@@ -253,8 +260,14 @@ public class DataService {
         //设置表头
         List<String> extraTitle = new ArrayList<String>(Arrays.asList("序号","姓名","高中"));
         List<String> title = new ArrayList<>(extraTitle);
+        List<Integer> excelHeaderWidth = new ArrayList<Integer>(Arrays.asList(50,50,50));
         for(QuestionEntity ques:surveyEntity.getQuestions()){
             title.add(ques.getTitle());
+            excelHeaderWidth.add(ques.getTitle().length()*10+20);
+        }
+
+        for (int i = 0; i < excelHeaderWidth.size(); i++) {
+            sheet.setColumnWidth(i,50*excelHeaderWidth.get(i));
         }
         //设置表头
         Row dataRow=sheet.createRow(0);
@@ -267,9 +280,10 @@ public class DataService {
         }
 
         for(int i = 0;i<ansSurveyEntityList.size();i++){
-            dataRow = sheet.createRow(rowIndex);
+            dataRow = sheet.createRow(rowIndex+i);
             colIndex = 0;
-            userInfoEntity.setId(ansSurveyEntityList.get(i).getRespondentId());
+            userInfoEntity = new UserInfoEntity();
+            userInfoEntity.setAdmissionNumber(ansSurveyEntityList.get(i).getRespondentId());
             userInfoEntity = userService.getUserInfoByConditions(userInfoEntity).get(0);
             //前几列输入用户信息
             for(int j =0;j<extraTitle.size();j++){

@@ -58,6 +58,18 @@ public class UserController extends BaseApi {
             return retMsg.Set(MsgType.ERROR, e.toString());
         }
     }
+    @RequestMapping(value = "addUser", method = RequestMethod.POST)
+    @ResponseBody
+    public Object addUser(@RequestBody UserEntity user) {
+        try {
+            if (userService.addUser(user))
+                return retMsg.Set(MsgType.SUCCESS, true);
+            return retMsg.Set(MsgType.SUCCESS, false);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return retMsg.Set(MsgType.ERROR, e.toString());
+        }
+    }
 
     @RequestMapping(value = "updateUserInfo", method = RequestMethod.POST)
     @ResponseBody

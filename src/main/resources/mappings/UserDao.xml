@@ -87,22 +87,25 @@
         select * from user_info
         <where>
             <if test="name != null and name !='' ">
-                `name` like concat('%', #{name}, '%')
+                and `name` like concat('%', #{name}, '%')
             </if>
             <if test="id != null and id !='' ">
-                `id`=#{id}
+                and `id`=#{id}
+            </if>
+            <if test="admissionNumber != null and admissionNumber !='' ">
+                and `admission_number`=#{admissionNumber}
             </if>
         </where>
     </select>
 
     <select id="getUserByConditions" parameterType="bit.ss.surveysystem.modules.sys.Entity.UserInfoEntity" resultMap="UserMap">
-        select * from user_info
+        select * from sys_user
         <where>
             <if test="role != null and role !='' ">
-                `role` = #{role}
+                and `role` = #{role}
             </if>
             <if test="id != null and id !='' ">
-                `id`=#{id}
+                and `id`=#{id}
             </if>
         </where>
     </select>

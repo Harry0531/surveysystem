@@ -37,11 +37,11 @@ public class DataController extends BaseApi {
     @RequestMapping(value = "exportSurvey")
     @ResponseBody
     public Object exportSurvey(
-            @RequestParam SearchEntity searchEntity,
+            @RequestBody SearchEntity searchEntity,
             HttpServletResponse response
     ) throws Exception {
         try {
-            Object result = dataService.getSurveyStatistics(searchEntity);
+            Object result = dataService.exportSurvey(searchEntity,response);
             return retMsg.Set(MsgType.SUCCESS,result);
         } catch (Exception e) {
             e.printStackTrace();

@@ -55,6 +55,24 @@ public class UserService {
         return true;
     }
 
+
+    public boolean addUser(UserEntity user) {
+        if (isNameUsed(user.getUsername()))
+            return false;
+        user.preInsert();
+        UserInfoEntity userInfoEntity = new UserInfoEntity();
+        userInfoEntity.setId(user.getId());
+        userInfoEntity.setAdmissionNumber(user.getUsername());
+        try{
+            userDAO.insertUserInfoEntry(userInfoEntity);
+            userDAO.insertUserEntry(user);
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
     public List<UserInfoEntity> getUserInfoByConditions(UserInfoEntity userInfoEntity){
         return  userDAO.getUserInfoByEntity(userInfoEntity);
     }
