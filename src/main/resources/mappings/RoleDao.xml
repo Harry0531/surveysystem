@@ -1,83 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="bit.ss.surveysystem.modules.sys.Dao.ConfigDao">
+<mapper namespace="bit.ss.surveysystem.modules.sys.Dao.RoleDao">
 
 
-    <resultMap id="ConfigBean" type="bit.ss.surveysystem.modules.sys.Entity.ConfigEntity">
+    <resultMap id="RoleBean" type="bit.ss.surveysystem.modules.sys.Entity.RoleEntity">
         <id property="id" column="id"/>
-        <result column="config_key" property="configKey"/>
-        <result column="config_value" property="configValue"/>
-        <result column="remark" property="remark"/>
+        <result column="code" property="code"/>
+        <result column="name" property="name"/>
         <result column="del_flag" property="delFlag"/>
-        <result column="sort" property="sort"/>
+
     </resultMap>
 
 
-    <select id="selectConfigTypeList" resultType="String">
-      select `config_key`
-      from sys_config
-      group by `config_key`
-    </select>
-
-    <select id="selectSearchCount" parameterType="bit.ss.surveysystem.modules.sys.Entity.ConfigEntity" resultType="int">
-        select count(*) from sys_config a
+    <select id="selectSearchCount" parameterType="bit.ss.surveysystem.modules.sys.Entity.RoleEntity" resultType="int">
+        select count(*) from sys_role a
         <where>
             <if test="page.searchKey != '' and page.searchKey != null">
-                and a.config_key like concat('%', #{page.searchKey}, '%')
+                and a.name like concat('%', #{page.searchKey}, '%')
             </if>
         </where>
     </select>
 
-    <select id="selectConfigListByPage" parameterType="bit.ss.surveysystem.modules.sys.Entity.ConfigEntity"
-            resultMap="ConfigBean">
+    <select id="selectRoleListByPage" parameterType="bit.ss.surveysystem.modules.sys.Entity.RoleEntity"
+            resultMap="RoleBean">
         select *,
-        from sys_config
+        from sys_role
         <where>
             <if test="page.searchKey != '' and page.searchKey != null">
-                and   `config_key`=#{page.searchKey}
+                and   `name`=#{page.searchKey}
             </if>
         </where>
-        ORDER BY `sort` DESC
         limit #{page.pageStart}, #{page.pageSize}
         for update
     </select>
 
 
-    <insert id="insertConfig" parameterType="bit.ss.surveysystem.modules.sys.Entity.ConfigEntity" >
-        insert into sys_config (
+    <insert id="insertRole" parameterType="bit.ss.surveysystem.modules.sys.Entity.RoleEntity" >
+        insert into sys_role (
         `id`,
-        `sort`,
-        `config_key`,
-        `config_value`,
-        `del_flag`,
-        `remark`
+        `code`,
+        `name`,
+        `del_flag`
         )values (
           #{id},
-          #{sort},
-          #{configKey},
-          #{configValue},
+          #{code},
+          #{name},
           #{delFlag},
-          #{remark}
         )
     </insert>
 
-    <update id="deleteConfigByIds" parameterType="bit.ss.surveysystem.modules.sys.Entity.ConfigEntity">
-        update sys_config set `del_flag`=1-`del_flag` where id in
+    <update id="deleteRoleByIds" parameterType="bit.ss.surveysystem.modules.sys.Entity.RoleEntity">
+        delete from sys_role  where id in
         <foreach collection="list" item="item" open="(" close=")" separator=",">
             #{item.id}
         </foreach>
     </update>
 
-    <update id="deleteConfigById" parameterType="bit.ss.surveysystem.modules.sys.Entity.ConfigEntity">
-        update sys_config set `del_flag`=1-`del_flag` where `id`=#{id}
+    <update id="deleteRoleById" parameterType="bit.ss.surveysystem.modules.sys.Entity.RoleEntity">
+        delete from sys_role where `id`=#{id}
     </update>
 
-    <update id="updateConfig" parameterType="bit.ss.surveysystem.modules.sys.Entity.ConfigEntity">
+    <update id="updateRole" parameterType="bit.ss.surveysystem.modules.sys.Entity.RoleEntity">
         update  sys_config
-        set `config_key` = #{configKey},
-            `config_value`    = #{configValue},
-            `remark`       = #{remark},
-            `sort`         = #{sort}
+        set `code` = #{code},
+            `name`    = #{name},
+            `del_flag`       = #{delFlag},
         where id =#{id}
     </update>
 

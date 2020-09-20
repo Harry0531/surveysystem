@@ -1,9 +1,11 @@
 package bit.ss.surveysystem.modules.sys.Entity;
 
+import bit.ss.surveysystem.common.persistence.DataEntity;
+import javafx.scene.chart.PieChart;
 import lombok.Data;
 
 @Data
-public class UserInfoEntity {
+public class UserInfoEntity extends DataEntity<UserInfoEntity> {
 
     private String id;
     private String admissionNumber;

@@ -5,7 +5,9 @@ import bit.ss.surveysystem.common.web.BaseApi;
 import bit.ss.surveysystem.common.web.MsgType;
 import bit.ss.surveysystem.modules.sys.Entity.ConfigEntity;
 import bit.ss.surveysystem.modules.sys.Entity.Dict;
+import bit.ss.surveysystem.modules.sys.Entity.RoleEntity;
 import bit.ss.surveysystem.modules.sys.Service.ConfigService;
+import bit.ss.surveysystem.modules.sys.Service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -17,43 +19,22 @@ import java.util.List;
       * @author wh
       * @date 2019/8/12 13:08
       */
-@RequestMapping("api/sys/config")
+@RequestMapping("api/sys/role")
 @Controller
 public class RoleController extends BaseApi {
 
     @Autowired
-    ConfigService configService;
+    RoleService roleService;
 
-    //后端插入字典类型用，不做前端实现
-//    @RequestMapping(value = "insertDictType",method = RequestMethod.POST)
-//    @ResponseBody
-//    public Object insertDictType(@RequestBody DictType dictType)throws Exception {
-//        if(dictService.insertDictType(dictType)){
-//            return retMsg.Set(MsgType.SUCCESS);
-//        }else
-//            return retMsg.Set(MsgType.ERROR);
-//    }
 
-    @RequestMapping(value= "getConfigTypeList",method = RequestMethod.GET)
+
+    @RequestMapping(value ="selectRoleListByPage",method = RequestMethod.POST)
     @ResponseBody
-    public Object getConfigTypeList()throws Exception {
-        try {
-            List<String> data = configService.selectConfigTypeList();
-            return retMsg.Set(MsgType.SUCCESS,data);
-        }catch (Exception e){
-            e.printStackTrace();
-            return retMsg.Set(MsgType.ERROR);
-        }
-    }
-
-
-    @RequestMapping(value ="selectConfigListByPage",method = RequestMethod.POST)
-    @ResponseBody
-    public Object selectConfigListByPage(@RequestBody ConfigEntity configEntity)throws Exception {
+    public Object selectRoleListByPage(@RequestBody RoleEntity roleEntity)throws Exception {
             try{
-                Page<Dict> page = new Page<>();
-                page.setResultList(configService.selectDictListByPage(configEntity));
-                page.setTotal(configService.selectSearchCount(configEntity));
+                Page<RoleEntity> page = new Page<>();
+                page.setResultList(roleService.selectRoleListByPage(roleEntity));
+                page.setTotal(roleService.selectSearchCount(roleEntity));
                 return retMsg.Set(MsgType.SUCCESS,page);
             }catch (Exception e){
                 e.printStackTrace();
@@ -61,26 +42,26 @@ public class RoleController extends BaseApi {
             }
     }
 
-    @RequestMapping(value = "insertOrUpdateConfig",method = RequestMethod.POST)
+    @RequestMapping(value = "insertOrUpdateRole",method = RequestMethod.POST)
     @ResponseBody
-    public Object insertOrUpdateConfig(@RequestBody ConfigEntity configEntity)throws Exception {
-        if("".equals(configEntity.getId())||configEntity.getId()==null){
-            if(configService.insertDict(configEntity))
+    public Object insertOrUpdateRole(@RequestBody RoleEntity roleEntity)throws Exception {
+        if("".equals(roleEntity.getId())||roleEntity.getId()==null){
+            if(roleService.insertRole(roleEntity))
                 return retMsg.Set(MsgType.SUCCESS);
             else return retMsg.Set(MsgType.ERROR);
         }else{
-            if(configService.updateDict(configEntity))
+            if(roleService.updateRole(roleEntity))
                 return retMsg.Set(MsgType.SUCCESS);
             else return retMsg.Set(MsgType.ERROR);
         }
 
     }
 
-    @RequestMapping(value="deleteConfigByIds",method = RequestMethod.POST)
+    @RequestMapping(value="deleteRoleByIds",method = RequestMethod.POST)
     @ResponseBody
-    public Object deleteConfigByIds(@RequestBody List<ConfigEntity> configEntities)throws Exception {
+    public Object deleteRoleByIds(@RequestBody List<RoleEntity> roleEntities)throws Exception {
         try{
-            if(configService.deleteDictByIds(configEntities)){
+            if(roleService.deleteRoleByIds(roleEntities)){
                 return retMsg.Set(MsgType.SUCCESS);
             }else
                 return retMsg.Set(MsgType.ERROR);
@@ -90,13 +71,11 @@ public class RoleController extends BaseApi {
         }
     }
 
-    @RequestMapping(value="deleteConfigById",method = RequestMethod.POST)
+    @RequestMapping(value="deleteRoleById",method = RequestMethod.POST)
     @ResponseBody
-    public Object deleteConfigById(@RequestParam String configs)throws Exception {
-        ConfigEntity configEntity = new ConfigEntity();
-        configEntity.setId(configs);
+    public Object deleteRoleById(@RequestParam RoleEntity roleEntity)throws Exception {
         try{
-            if(configService.deleteDictById(configEntity)){
+            if(roleService.deleteRoleById(roleEntity)){
                 return retMsg.Set(MsgType.SUCCESS);
             }else
                 return retMsg.Set(MsgType.ERROR);

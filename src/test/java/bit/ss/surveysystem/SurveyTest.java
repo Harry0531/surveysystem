@@ -68,7 +68,7 @@ public class SurveyTest {
         surveyEntity.setOwnerId("2bcdd55957804be38f99e770fbfd8a20");
         surveyEntity.setTitle("测试问卷1");
         surveyEntity.setDescription("这是一个测试问卷");
-        surveyEntity.setEnable(0);
+        surveyEntity.setEnable(false);
 
         List<QuestionEntity> questionEntities = new ArrayList<>();
 
@@ -77,7 +77,6 @@ public class SurveyTest {
         q1.setTitle("你是谁");
         q1.setIndex(1);
         q1.setType(QuestionType.FILL_BLANK);
-        q1.setIsRequired(1);
         q1.setDefaultAns("王日天");
         questionEntities.add(q1);
 
@@ -87,7 +86,6 @@ public class SurveyTest {
         q2.setTitle("你来自哪个年级");
         q2.setIndex(2);
         q2.setType(QuestionType.MULTIPLE);
-        q2.setIsRequired(1);
         q2.setAnswerList(Lists.newArrayList("大一", "大二", "大三","大四"));
         q2.setDefaultAns("大一");
         questionEntities.add(q2);

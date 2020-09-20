@@ -95,7 +95,7 @@
         </where>
     </select>
 
-    <select id="getUserByConditions" parameterType="bit.ss.surveysystem.modules.sys.Entity.UserEntity" resultMap="UserMap">
+    <select id="getUserByConditions" parameterType="bit.ss.surveysystem.modules.sys.Entity.UserInfoEntity" resultMap="UserMap">
         select * from user_info
         <where>
             <if test="name != null and name !='' ">

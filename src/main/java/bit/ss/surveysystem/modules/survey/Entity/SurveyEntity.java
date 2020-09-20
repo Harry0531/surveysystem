@@ -27,7 +27,7 @@ public class SurveyEntity {
 
     private String description;//问卷描述
 
-    private Integer enable;//问卷是否启用
+    private Boolean enable;//问卷是否启用
 
     private List<QuestionEntity> questions;//问题列表
 

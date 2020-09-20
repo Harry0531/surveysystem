@@ -4,24 +4,25 @@ package bit.ss.surveysystem.modules.sys.Dao;
 
 import bit.ss.surveysystem.modules.sys.Entity.ConfigEntity;
 import bit.ss.surveysystem.modules.sys.Entity.Dict;
+import bit.ss.surveysystem.modules.sys.Entity.RoleEntity;
 
+import javax.management.relation.Role;
 import java.util.List;
 
 
 public interface RoleDao {
 
 
-    List<String> selectConfigTypeList();
 
     //关于字典操作
-    List<Dict> selectConfigListByPage(ConfigEntity configEntity);
-    int selectSearchCount(ConfigEntity configEntity);
+    List<RoleEntity> selectRoleListByPage(RoleEntity roleEntity);
+    int selectSearchCount(RoleEntity roleEntity);
 
-    int insertConfig(ConfigEntity configEntity);
+    int insertRole(RoleEntity roleEntity);
 
-    int deleteConfigByIds(List<ConfigEntity> configEntity);
-    int deleteConfigById(ConfigEntity configEntity);
+    int deleteRoleByIds(List<RoleEntity> roleEntity);
+    int deleteRoleById(RoleEntity roleEntity);
 
-    int updateConfig(ConfigEntity configEntity);
+    int updateRole(RoleEntity roleEntity);
 
 }

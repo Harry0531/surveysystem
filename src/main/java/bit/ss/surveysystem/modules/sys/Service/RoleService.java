@@ -1,8 +1,10 @@
 package bit.ss.surveysystem.modules.sys.Service;
 
 import bit.ss.surveysystem.modules.sys.Dao.ConfigDao;
+import bit.ss.surveysystem.modules.sys.Dao.RoleDao;
 import bit.ss.surveysystem.modules.sys.Entity.ConfigEntity;
 import bit.ss.surveysystem.modules.sys.Entity.Dict;
+import bit.ss.surveysystem.modules.sys.Entity.RoleEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,34 +14,28 @@ import java.util.List;
 public class RoleService {
 
     @Autowired
-    ConfigDao configDao;
-    //关于字典类型
+    RoleDao roleDao;
 
-    public List<String> selectConfigTypeList(){
-        return configDao.selectConfigTypeList();
+    public List<RoleEntity> selectRoleListByPage(RoleEntity roleEntity){
+        return roleDao.selectRoleListByPage(roleEntity);
     }
-
-    //关于字典操作
-    public List<Dict> selectDictListByPage(ConfigEntity configEntity){
-        return configDao.selectConfigListByPage(configEntity);
-    }
-    public int selectSearchCount(ConfigEntity configEntity) {
-        return configDao.selectSearchCount(configEntity);
+    public int selectSearchCount(RoleEntity roleEntity) {
+        return roleDao.selectSearchCount(roleEntity);
     }
 
-    public  boolean insertDict(ConfigEntity configEntity){
-        configEntity.preInsert();
-        return configDao.insertConfig(configEntity) == 1;
+    public  boolean insertRole(RoleEntity roleEntity){
+        roleEntity.preInsert();
+        return roleDao.insertRole(roleEntity) == 1;
     }
-    public boolean deleteDictByIds(List<ConfigEntity> configEntities){
-        return configEntities.size()==0 || configDao.deleteConfigByIds(configEntities)==configEntities.size();
+    public boolean deleteRoleByIds(List<RoleEntity> roleEntity){
+        return roleEntity.size()==0 || roleDao.deleteRoleByIds(roleEntity)==roleEntity.size();
     }
-    public boolean deleteDictById(ConfigEntity configEntity){
-        return configDao.deleteConfigById(configEntity)==1;
+    public boolean deleteRoleById(RoleEntity roleEntity){
+        return roleDao.deleteRoleById(roleEntity)==1;
     }
 
-    public  boolean updateDict(ConfigEntity configEntity){
-        return configDao.updateConfig(configEntity) == 1;
+    public  boolean updateRole(RoleEntity roleEntity){
+        return roleDao.updateRole(roleEntity) == 1;
     }
 
 

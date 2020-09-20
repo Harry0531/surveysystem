@@ -45,7 +45,7 @@ public class SurveyService {
         Query query = Query.query(Criteria.where("id").is(surveyEntity.getId()));
         Update update =new Update();
         update.set("enable",surveyEntity.getEnable());
-        if(surveyEntity.getEnable() == 1){
+        if(surveyEntity.getEnable()){
             update.set("start_time",new Date());
         }else{
             update.set("end_time",new Date());

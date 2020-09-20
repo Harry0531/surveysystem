@@ -62,14 +62,14 @@
     </insert>
 
     <update id="deleteConfigByIds" parameterType="bit.ss.surveysystem.modules.sys.Entity.ConfigEntity">
-        update sys_config set `del_flag`=1-`del_flag` where id in
+        delete from sys_config where id in
         <foreach collection="list" item="item" open="(" close=")" separator=",">
             #{item.id}
         </foreach>
     </update>
 
     <update id="deleteConfigById" parameterType="bit.ss.surveysystem.modules.sys.Entity.ConfigEntity">
-        update sys_config set `del_flag`=1-`del_flag` where `id`=#{id}
+       delete from sys_config  where `id`=#{id}
     </update>
 
     <update id="updateConfig" parameterType="bit.ss.surveysystem.modules.sys.Entity.ConfigEntity">

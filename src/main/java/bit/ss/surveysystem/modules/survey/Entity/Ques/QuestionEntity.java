@@ -23,7 +23,7 @@ public class QuestionEntity {
     private QuestionType type;//题目类型
 
     @Field("is_required")
-    private Integer isRequired;//是否为必选题
+    private boolean isRequired;//是否为必选题
 
     @Field("default_ans")
     private String defaultAns;//默认答案
@@ -37,7 +37,7 @@ public class QuestionEntity {
     @Field("skip_logic")
     private List<SkipLogic>skipLogices;//跳题逻辑
 
-    private Integer isPrivate;//是否为隐私项
+    private Boolean isPrivate;//是否为隐私项
     private String validation;//是否需要验证
 
     private SearchConditionType searchCondition;//大于、小于；等于、不等于、包含、不包含
