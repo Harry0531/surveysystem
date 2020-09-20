@@ -73,9 +73,9 @@ public class RoleController extends BaseApi {
 
     @RequestMapping(value="deleteRoleById",method = RequestMethod.POST)
     @ResponseBody
-    public Object deleteRoleById(@RequestParam RoleEntity roleEntity)throws Exception {
+    public Object deleteRoleById(@RequestBody RoleEntity role)throws Exception {
         try{
-            if(roleService.deleteRoleById(roleEntity)){
+            if(roleService.deleteRoleById(role)){
                 return retMsg.Set(MsgType.SUCCESS);
             }else
                 return retMsg.Set(MsgType.ERROR);

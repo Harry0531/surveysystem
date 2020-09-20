@@ -98,9 +98,6 @@
     <select id="getUserByConditions" parameterType="bit.ss.surveysystem.modules.sys.Entity.UserInfoEntity" resultMap="UserMap">
         select * from user_info
         <where>
-            <if test="name != null and name !='' ">
-                `name` like concat('%', #{name}, '%')
-            </if>
             <if test="role != null and role !='' ">
                 `role` = #{role}
             </if>

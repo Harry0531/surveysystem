@@ -15,7 +15,7 @@
     <select id="selectSearchCount" parameterType="bit.ss.surveysystem.modules.sys.Entity.RoleEntity" resultType="int">
         select count(*) from sys_role a
         <where>
-            <if test="page.searchKey != '' and page.searchKey != null">
+            <if test="page.searchKey != null and page.searchKey != '' ">
                 and a.name like concat('%', #{page.searchKey}, '%')
             </if>
         </where>
@@ -26,7 +26,7 @@
         select *,
         from sys_role
         <where>
-            <if test="page.searchKey != '' and page.searchKey != null">
+            <if test="page.searchKey != null and page.searchKey != '' ">
                 and   `name`=#{page.searchKey}
             </if>
         </where>
@@ -45,7 +45,7 @@
           #{id},
           #{code},
           #{name},
-          #{delFlag},
+          #{delFlag}
         )
     </insert>
 
@@ -61,10 +61,10 @@
     </update>
 
     <update id="updateRole" parameterType="bit.ss.surveysystem.modules.sys.Entity.RoleEntity">
-        update  sys_config
+        update  sys_role
         set `code` = #{code},
             `name`    = #{name},
-            `del_flag`       = #{delFlag},
+            `del_flag`       = #{delFlag}
         where id =#{id}
     </update>
 

@@ -97,9 +97,7 @@ public class DictController extends BaseApi {
 
     @RequestMapping(value = "deleteDictById", method = RequestMethod.POST)
     @ResponseBody
-    public Object deleteDictById(@RequestParam String dicts) throws Exception {
-        Dict dict = new Dict();
-        dict.setId(dicts);
+    public Object deleteDictById(@RequestBody Dict dict) throws Exception {
         try {
             if (dictService.deleteDictById(dict)) {
                 return retMsg.Set(MsgType.SUCCESS);

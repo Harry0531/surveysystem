@@ -22,17 +22,16 @@ public class SurveyService {
 
     public List<SurveyEntity> selectSurveyByConditions(SurveyEntity surveyEntity){
         Query query = new Query();
-
-        if(surveyEntity.getId()!=null){
+        if(surveyEntity.getId()!=null&&!"".equals(surveyEntity.getId())){
             query.addCriteria(Criteria.where("id").is(surveyEntity.getId()));
         }
-        if(surveyEntity.getOwnerId()!=null){
+        if(surveyEntity.getOwnerId()!=null&&!"".equals(surveyEntity.getOwnerId())){
             query.addCriteria(Criteria.where("owner_id").is(surveyEntity.getOwnerId()));
         }
-        if(surveyEntity.getTitle()!=null){
+        if(surveyEntity.getTitle()!=null&&!"".equals(surveyEntity.getTitle())){
             query.addCriteria(Criteria.where("title").regex(Pattern.compile("^.*"+surveyEntity.getTitle()+".*$")));
         }
-        if(surveyEntity.getDescription()!=null){
+        if(surveyEntity.getDescription()!=null&&!"".equals(surveyEntity.getDescription())){
             query.addCriteria(Criteria.where("description").regex(Pattern.compile("^.*"+surveyEntity.getTitle()+".*$")));
         }
 
@@ -123,13 +122,14 @@ public class SurveyService {
 
     public List<AnsSurveyEntity> selectAnswerByConditions(AnsSurveyEntity ansSurveyEntity){
             Query query = new Query();
-            if(ansSurveyEntity.getId()!=null){
+
+            if(ansSurveyEntity.getId()!=null &&!"".equals(ansSurveyEntity.getId())){
                 query.addCriteria(Criteria.where("id").is(ansSurveyEntity.getId()));
             }
-           if(ansSurveyEntity.getRespondentId()!=null){
+           if(ansSurveyEntity.getRespondentId()!=null&&!"".equals(ansSurveyEntity.getRespondentId())){
                query.addCriteria(Criteria.where("respondent_id").is(ansSurveyEntity.getRespondentId()));
            }
-            if(ansSurveyEntity.getSurveyId()!=null){
+            if(ansSurveyEntity.getSurveyId()!=null&&!"".equals(ansSurveyEntity.getSurveyId())){
                 query.addCriteria(Criteria.where("survey_id").is(ansSurveyEntity.getSurveyId()));
             }
             return mongoTemplate.find(query,AnsSurveyEntity.class,"ans");

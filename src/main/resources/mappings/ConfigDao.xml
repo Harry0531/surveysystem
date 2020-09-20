@@ -22,7 +22,7 @@
     <select id="selectSearchCount" parameterType="bit.ss.surveysystem.modules.sys.Entity.ConfigEntity" resultType="int">
         select count(*) from sys_config a
         <where>
-            <if test="page.searchKey != '' and page.searchKey != null">
+            <if test="page.searchKey != null and page.searchKey != '' ">
                 and a.config_key like concat('%', #{page.searchKey}, '%')
             </if>
         </where>
@@ -33,7 +33,7 @@
         select *,
         from sys_config
         <where>
-            <if test="page.searchKey != '' and page.searchKey != null">
+            <if test="page.searchKey != null and page.searchKey != '' ">
                 and   `config_key`=#{page.searchKey}
             </if>
         </where>
