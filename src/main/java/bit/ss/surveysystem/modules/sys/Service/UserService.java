@@ -80,6 +80,10 @@ public class UserService {
     public boolean updateUserInfo(UserInfoEntity userInfoEntity){
         return userDAO.updateUserInfo(userInfoEntity) == 1;
     }
+
+    public boolean updateUser(UserEntity userInfoEntity){
+        return userDAO.updateUser(userInfoEntity) == 1;
+    }
     
     public List<UserEntity> getUserByConditions(UserEntity userEntity){
         return userDAO.getUserByConditions(userEntity);

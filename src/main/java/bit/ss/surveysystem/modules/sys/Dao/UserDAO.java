@@ -13,6 +13,7 @@ public interface UserDAO {
     int insertUserInfoEntry(UserInfoEntity user);
 
     int updateUserInfo(UserInfoEntity userInfoEntity);
+    int updateUser(UserEntity userInfoEntity);
     int updateLoginTime(UserEntity user);
     List<UserInfoEntity> getUserInfoByEntity(UserInfoEntity user);
     List<UserEntity> getUserByConditions(UserEntity userEntity);

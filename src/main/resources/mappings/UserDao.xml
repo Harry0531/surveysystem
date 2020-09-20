@@ -82,6 +82,14 @@
         where `id`=#{id}
     </update>
 
+    <update id="updateUser" parameterType="bit.ss.surveysystem.modules.sys.Entity.UserEntity">
+        update sys_user
+        set `username`=#{username},
+        `password`=#{password},
+        `email`=#{email},
+        `role`=#{role}
+        where `id`=#{id}
+    </update>
     <!--TODO 添加多种筛选-->
     <select id="getUserInfoByEntity" parameterType="bit.ss.surveysystem.modules.sys.Entity.UserInfoEntity" resultMap="BaseResultMap">
         select * from user_info
