@@ -21,7 +21,7 @@ public class AnsSurveyEntity {
 
     @Field("ans_list")
     private List<AnswerEntity> ansList;
-    public  void preInsert(){
+    public void preInsert(){
         this.id = IdGen.uuid();
     }
 }

@@ -41,6 +41,7 @@ public class UserService {
         if (isNameUsed(user.getUsername()))
             return false;
         user.preInsert();
+        user.setRole("student");
         UserInfoEntity userInfoEntity = new UserInfoEntity();
         userInfoEntity.setId(user.getId());
         userInfoEntity.setAdmissionNumber(user.getUsername());
@@ -70,4 +71,5 @@ public class UserService {
         userDAO.deleteUserInfoByIds(userEntities);
         return userDAO.deleteUserByIds(userEntities);
     }
+
 }

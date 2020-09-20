@@ -1,34 +1,27 @@
 package bit.ss.surveysystem.modules.survey.Service;
 
-import bit.ss.surveysystem.common.utils.ExcelUtils;
 import bit.ss.surveysystem.modules.survey.Entity.Ans.AnsSurveyEntity;
 import bit.ss.surveysystem.modules.survey.Entity.Ans.AnswerEntity;
 import bit.ss.surveysystem.modules.survey.Entity.Ques.QuestionEntity;
+import bit.ss.surveysystem.modules.survey.Entity.SearchEntity;
 import bit.ss.surveysystem.modules.survey.Entity.SurveyEntity;
 import bit.ss.surveysystem.modules.sys.Entity.UserInfoEntity;
 import bit.ss.surveysystem.modules.sys.Service.UserService;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Array;
 import java.util.*;
-import java.util.regex.Pattern;
 
 
 @Service
@@ -41,16 +34,134 @@ public class DataService {
     SurveyService surveyService;
 
     @Autowired
-    UserService userServicel;
+    UserService userService;
 
-    public Object getSurveyStatistics(SurveyEntity surveyEntity){
+    public List<AnsSurveyEntity> getAnsListByConditions(SearchEntity searchEntity){
         //获取问卷信息
-        surveyEntity = surveyService.selectSurveyByConditions(surveyEntity).get(0);
+        SurveyEntity surveyEntity = surveyService.selectSurveyByConditions(searchEntity.getSurveyEntity()).get(0);
         //获取所有该问卷的答卷
         AnsSurveyEntity ansSurveyEntity = new AnsSurveyEntity();
         ansSurveyEntity.setSurveyId(surveyEntity.getId());
-        List<AnsSurveyEntity> ansSurveyEntityList = surveyService.selectAnswerByConditions(ansSurveyEntity);
-        //遍历每个题目
+        List<AnsSurveyEntity> oldAnsList = surveyService.selectAnswerByConditions(ansSurveyEntity);
+        List<AnsSurveyEntity> ansSurveyEntityList = new ArrayList<>();
+        //对答卷进行筛选
+
+        //用户筛选
+        List<UserInfoEntity> userList = userService.getUserInfoByConditions(searchEntity.getUserConditions());
+        List<String> userIdList;
+        userIdList = new ArrayList<>();
+        for(UserInfoEntity userInfoEntity:userList){
+            userIdList.add(userInfoEntity.getAdmissionNumber());
+        }
+        for(AnsSurveyEntity ans:oldAnsList){
+            if(userIdList.contains(ans.getRespondentId())){
+                ansSurveyEntityList.add(ans);
+            }
+        }
+        //题目条件筛选
+        if(searchEntity.getSurveyEntity().getQuestions()!=null){
+            for(QuestionEntity ques:searchEntity.getSurveyEntity().getQuestions()){
+                oldAnsList.clear();
+                oldAnsList.addAll(ansSurveyEntityList);
+                ansSurveyEntityList.clear();
+                switch (ques.getSearchCondition()){
+                    case LESS:
+                        for(AnsSurveyEntity ansSurvey:oldAnsList){
+                            //每份答卷
+                            for (AnswerEntity ans:ansSurvey.getAnsList()){
+                                if(ans.getQuestionId().equals(ques.getId())){
+                                    if(Integer.parseInt(ans.getAnswer())<Integer.parseInt(ques.getSearchKey())){
+                                        ansSurveyEntityList.add(ansSurvey);
+                                    }else {
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                    case GREATER:
+                        for(AnsSurveyEntity ansSurvey:oldAnsList){
+                            //每份答卷
+                            for (AnswerEntity ans:ansSurvey.getAnsList()){
+                                if(ans.getQuestionId().equals(ques.getId())){
+                                    if(Integer.parseInt(ans.getAnswer())>Integer.parseInt(ques.getSearchKey())){
+                                        ansSurveyEntityList.add(ansSurvey);
+                                    }else {
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                    case EQUAL:
+                        for(AnsSurveyEntity ansSurvey:oldAnsList){
+                            //每份答卷
+                            for (AnswerEntity ans:ansSurvey.getAnsList()){
+                                if(ans.getQuestionId().equals(ques.getId())){
+                                    if(ques.getSearchKey().equals(ans.getAnswer())){
+                                        ansSurveyEntityList.add(ansSurvey);
+                                    }else {
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                    case NOT_EQUAL:
+                        for(AnsSurveyEntity ansSurvey:oldAnsList){
+                            //每份答卷
+                            for (AnswerEntity ans:ansSurvey.getAnsList()){
+                                if(ans.getQuestionId().equals(ques.getId())){
+                                    if(!ques.getSearchKey().equals(ans.getAnswer())){
+                                        ansSurveyEntityList.add(ansSurvey);
+                                    }else {
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                    case CONTAIN:
+                        for(AnsSurveyEntity ansSurvey:oldAnsList){
+                            //每份答卷
+                            for (AnswerEntity ans:ansSurvey.getAnsList()){
+                                if(ans.getQuestionId().equals(ques.getId())){
+                                    if(ans.getAnswer().contains(ques.getSearchKey())){
+                                        ansSurveyEntityList.add(ansSurvey);
+                                    }else {
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                    case NOT_CONTAIN:
+                        for(AnsSurveyEntity ansSurvey:oldAnsList){
+                            //每份答卷
+                            for (AnswerEntity ans:ansSurvey.getAnsList()){
+                                if(ans.getQuestionId().equals(ques.getId())){
+                                    if(!ans.getAnswer().contains(ques.getSearchKey())){
+                                        ansSurveyEntityList.add(ansSurvey);
+                                    }else {
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        return ansSurveyEntityList;
+    }
+
+    public Object getSurveyStatistics(SearchEntity searchEntity){
+        SurveyEntity surveyEntity = surveyService.selectSurveyByConditions(searchEntity.getSurveyEntity()).get(0);
+        List<AnsSurveyEntity> ansSurveyEntityList = getAnsListByConditions(searchEntity);
+        //遍历每个题目进行统计
         HashMap<Integer,Object> result = new HashMap<>();
         for(QuestionEntity ques:surveyEntity.getQuestions()){
             HashMap<String,Object> singleResult = new HashMap<>();
@@ -69,11 +180,11 @@ public class DataService {
             //答案统计
             HashMap<String,Object> statisticsAns = new HashMap<>();
             switch (ques.getType()){
-                case FillBlank:
-                case Sort:
+                case FILL_BLANK:
+                case ORDER:
                      break;
-                 case MultipleChoice:
-                 case SingleChoice:
+                case MULTIPLE:
+                case SINGLE:
                      int totalCnt = ansSurveyEntityList.size();
                      List<Integer> ansCnt = new ArrayList<>();
                      for(int i =0;i<ques.getAnswerList().size();i++) ansCnt.add(0);
@@ -95,6 +206,7 @@ public class DataService {
                     break;
            }
             singleResult.put("statistics",statisticsAns);
+            singleResult.put("question",ques);
             result.put(ques.getIndex(),singleResult);
         }
 
@@ -103,7 +215,9 @@ public class DataService {
     }
 
 
-    public Object exportSurvey(SurveyEntity surveyEntity, HttpServletResponse response){
+    public Object exportSurvey(SearchEntity searchEntity, HttpServletResponse response){
+        SurveyEntity surveyEntity = surveyService.selectSurveyByConditions(searchEntity.getSurveyEntity()).get(0);
+        List<AnsSurveyEntity> ansSurveyEntityList = getAnsListByConditions(searchEntity);
 
         XSSFWorkbook wb = new XSSFWorkbook();
         XSSFSheet sheet = wb.createSheet(surveyEntity.getTitle());
@@ -134,7 +248,7 @@ public class DataService {
         dataStyle.setVerticalAlignment(XSSFCellStyle.VERTICAL_CENTER);
 
 
-        List<AnsSurveyEntity> ansSurveyEntityList = surveyService.selectAnswerByConditions();
+
         UserInfoEntity userInfoEntity=new UserInfoEntity();
         //设置表头
         List<String> extraTitle = new ArrayList<String>(Arrays.asList("序号","姓名","高中"));
@@ -156,7 +270,7 @@ public class DataService {
             dataRow = sheet.createRow(rowIndex);
             colIndex = 0;
             userInfoEntity.setId(ansSurveyEntityList.get(i).getRespondentId());
-            userInfoEntity = userServicel.getUserInfoById(userInfoEntity);
+            userInfoEntity = userService.getUserInfoByConditions(userInfoEntity).get(0);
             //前几列输入用户信息
             for(int j =0;j<extraTitle.size();j++){
                 dataCell = dataRow.createCell(colIndex+j);
@@ -185,8 +299,6 @@ public class DataService {
         }
 
 
-
-
         response.setContentType("application/vnd.ms-excel");
         //注意此处文件名称如果想使用中文的话，要转码new String( "中文".getBytes( "gb2312" ), "ISO8859-1" )
         try {
@@ -198,8 +310,6 @@ public class DataService {
             ouputStream.flush();
             ouputStream.close();
 
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }

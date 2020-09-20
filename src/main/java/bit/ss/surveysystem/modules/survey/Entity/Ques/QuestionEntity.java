@@ -40,7 +40,7 @@ public class QuestionEntity {
     private Integer isPrivate;//是否为隐私项
     private String validation;//是否需要验证
 
-    private String searchCondition;//大于、小于；等于、不等于、包含、不包含
+    private SearchConditionType searchCondition;//大于、小于；等于、不等于、包含、不包含
     private String searchKey;//具体值
 
 
