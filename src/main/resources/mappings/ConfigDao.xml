@@ -30,7 +30,7 @@
 
     <select id="selectConfigListByPage" parameterType="bit.ss.surveysystem.modules.sys.Entity.ConfigEntity"
             resultMap="ConfigBean">
-        select *,
+        select *
         from sys_config
         <where>
             <if test="page.searchKey != null and page.searchKey != '' ">
