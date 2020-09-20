@@ -31,8 +31,7 @@ public class SurveyEntity {
 
     private List<QuestionEntity> questions;//问题列表
 
-    private Integer isPrivate;//是否为隐私项
-    private Integer validation;//是否需要验证
+
 
     @Field("start_time")
     private Date startTime;//问卷开始填写时间

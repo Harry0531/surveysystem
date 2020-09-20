@@ -2,6 +2,7 @@ package bit.ss.surveysystem.modules.sys.Dao;
 
 import bit.ss.surveysystem.modules.sys.Entity.UserEntity;
 import bit.ss.surveysystem.modules.sys.Entity.UserInfoEntity;
+import java.util.List;
 import org.apache.catalina.User;
 
 public interface UserDAO {
@@ -13,7 +14,9 @@ public interface UserDAO {
 
     int updateUserInfo(UserInfoEntity userInfoEntity);
     int updateLoginTime(UserEntity user);
-    UserInfoEntity getUserInfoByEntity(UserInfoEntity user);
+    List<UserInfoEntity> getUserInfoByEntity(UserInfoEntity user);
+    List<UserEntity> getUserByConditions(UserEntity userEntity);
 
-
+    int deleteUserByIds(List<UserEntity> userEntities);
+    int deleteUserInfoByIds(List<UserEntity> userEntities);
 }

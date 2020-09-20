@@ -87,11 +87,41 @@
         select * from user_info
         <where>
             <if test="name != null and name !='' ">
-                `name` = #{name}
+                `name` like concat('%', #{name}, '%')
             </if>
             <if test="id != null and id !='' ">
                 `id`=#{id}
             </if>
         </where>
     </select>
+
+    <select id="getUserByConditions" parameterType="bit.ss.surveysystem.modules.sys.Entity.UserEntity" resultMap="UserMap">
+        select * from user_info
+        <where>
+            <if test="name != null and name !='' ">
+                `name` like concat('%', #{name}, '%')
+            </if>
+            <if test="role != null and role !='' ">
+                `role` = #{role}
+            </if>
+            <if test="id != null and id !='' ">
+                `id`=#{id}
+            </if>
+        </where>
+    </select>
+
+    <update id="deleteUserByIds" parameterType="bit.ss.surveysystem.modules.sys.Entity.UserEntity">
+        delete from  sys_user  where id in
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item.id}
+        </foreach>
+    </update>
+
+
+    <update id="deleteUserInfoByIds" parameterType="bit.ss.surveysystem.modules.sys.Entity.UserEntity">
+        delete from  sys_user  where id in
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item.id}
+        </foreach>
+    </update>
 </mapper>

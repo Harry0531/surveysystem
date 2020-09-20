@@ -60,8 +60,6 @@ public class SurveyTest {
     private MockMvc mockMvc;
 
 
-
-
     @Test
     void testInsertOrUpdateSurvey(){
         SurveyEntity surveyEntity = new SurveyEntity();
