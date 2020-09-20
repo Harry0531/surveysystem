@@ -43,7 +43,13 @@ public class SurveyService {
 
     public int postSurvey(SurveyEntity surveyEntity){
         Query query = Query.query(Criteria.where("id").is(surveyEntity.getId()));
-        Update update = Update.update("start_time",new Date());
+        Update update =new Update();
+        update.set("enable",surveyEntity.getEnable());
+        if(surveyEntity.getEnable() == 1){
+            update.set("start_time",new Date());
+        }else{
+            update.set("end_time",new Date());
+        }
         mongoTemplate.updateMulti(query,update,"suit");
         return 1;
     }

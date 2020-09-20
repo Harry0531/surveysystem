@@ -22,7 +22,7 @@ public class SurveyController extends BaseApi {
     @Autowired
     SurveyService surveyService;
 
-    @RequestMapping(value="postSurvey",method = RequestMethod.POST)
+    @RequestMapping(value="enableSurvey",method = RequestMethod.POST)
     @ResponseBody
     public Object postSurvey(@RequestBody SurveyEntity surveyEntity)throws Exception {
         try{
@@ -128,5 +128,16 @@ public class SurveyController extends BaseApi {
         }
     }
 
+    @RequestMapping(value="getAnswerCountByConditions",method = RequestMethod.POST)
+    @ResponseBody
+    public Object getAnswerCountByConditions(@RequestBody AnsSurveyEntity ansSurveyEntity)throws Exception {
+        try{
+            List<AnsSurveyEntity> ansSurveyEntities = surveyService.selectAnswerByConditions(ansSurveyEntity);
+            return retMsg.Set(MsgType.SUCCESS,ansSurveyEntities.size());
+        }catch (Exception e){
+            e.printStackTrace();
+            return retMsg.Set(MsgType.ERROR);
+        }
+    }
 
 }
