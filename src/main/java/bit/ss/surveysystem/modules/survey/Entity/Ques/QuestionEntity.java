@@ -22,8 +22,8 @@ public class QuestionEntity {
 
     private QuestionType type;//题目类型
 
-    @Field("is_required")
-    private boolean isRequired;//是否为必选题
+    @Field("required")
+    private boolean required;//是否为必选题
 
     @Field("default_ans")
     private String defaultAns;//默认答案
