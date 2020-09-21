@@ -100,6 +100,8 @@ public class SurveyService {
     public int deleteSurveyById(SurveyEntity surveyEntity){
         Query query = Query.query(Criteria.where("id").is(surveyEntity.getId()));
         mongoTemplate.remove(query,SurveyEntity.class,"suit");
+
+
         return 1;
     }
 

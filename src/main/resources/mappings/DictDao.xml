@@ -23,13 +23,17 @@
     <select id="selectSearchCount" parameterType="bit.ss.surveysystem.modules.sys.Entity.Dict" resultType="int">
         select count(*) from sys_dict a
         <where>
-            <if test="dicProperty != null and dicProperty != '' ">
-                and   a.`dic_property`=#{dicProperty}
-            </if>
 
-            <if test="page.searchKey != null and page.searchKey != '' ">
-                and a.dic_value like concat('%', #{page.searchKey}, '%')
-            </if>
+                <if test="dicProperty != null and dicProperty != ''">
+                    and   a.`dic_property`=#{dicProperty}
+                </if>
+                <if test="father != null and father != ''">
+                    and   a.`father`=#{father}
+                </if>
+                <if test="page.searchKey != null and page.searchKey != '' ">
+                    and a.dic_value like concat('%', #{page.searchKey}, '%')
+                </if>
+
         </where>
     </select>
 
@@ -43,7 +47,9 @@
             <if test="dicProperty != null and dicProperty != ''">
                 and   a.`dic_property`=#{dicProperty}
             </if>
-
+            <if test="father != null and father != ''">
+                and   a.`father`=#{father}
+            </if>
             <if test="page.searchKey != null and page.searchKey != '' ">
                 and a.dic_value like concat('%', #{page.searchKey}, '%')
             </if>

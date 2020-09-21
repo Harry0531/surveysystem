@@ -37,7 +37,7 @@ public class Usertest {
         UserInfoEntity userInfoEntity = new UserInfoEntity();
         userInfoEntity.setName("日天");
         userInfoEntity.setContact("13681536017");
-        userInfoEntity.setType(2);
+        userInfoEntity.setType("学生");
         userInfoEntity.setId("2bcdd55957804be38f99e770fbfd8a20");
         System.out.println(userService.updateUserInfo(userInfoEntity));
     }

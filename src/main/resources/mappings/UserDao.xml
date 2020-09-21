@@ -95,13 +95,64 @@
         select * from user_info
         <where>
             <if test="name != null and name !='' ">
-                and `name` like concat('%', #{name}, '%')
+                and `name` =#{name}
             </if>
             <if test="id != null and id !='' ">
                 and `id`=#{id}
             </if>
             <if test="admissionNumber != null and admissionNumber !='' ">
                 and `admission_number`=#{admissionNumber}
+            </if>
+            <if test=" contact!=null and  contact!='' ">
+                and `contact` =#{contact}
+            </if>
+            <if test=" alternateContact!=null and  alternateContact!='' ">
+                and `alternate_contact` =#{alternateContact}
+            </if>
+            <if test=" type!=null and  type!='' ">
+                and `type` =#{type}
+            </if>
+            <if test=" studentName!=null and  studentName!='' ">
+                and `student_name` =#{studentName}
+            </if>
+            <if test=" province!=null and  province!='' ">
+                and `province` =#{province}
+            </if>
+            <if test=" city!=null and  city!='' ">
+                and `city` =#{city}
+            </if>
+            <if test=" address!=null and  address!='' ">
+                and `address` =#{address}
+            </if>
+            <if test=" highSchool!=null and  highSchool!='' ">
+                and `high_school` =#{highSchool}
+            </if>
+            <if test=" major!=null and  major!='' ">
+                and `major` =#{major}
+            </if>
+            <if test=" year!=null and  year!='' ">
+                and `year` =#{year}
+            </if>
+            <if test=" subject!=null and  subject!='' ">
+                and `subject` =#{subject}
+            </if>
+            <if test=" model!=null and  model!='' ">
+                and `model` =#{model}
+            </if>
+            <if test=" fractionalSegment!=null and  fractionalSegment!='' ">
+                and `fractional_segment` =#{fractionalSegment}
+            </if>
+            <if test=" rankingSection!=null and  rankingSection!='' ">
+                and `ranking_section` =#{model}
+            </if>
+            <if test=" qiangjiPlan!=null and  qiangjiPlan!='' ">
+                and `qiangji_plan` =#{qiangjiPlan}
+            </if>
+            <if test=" tiqianpi!=null and  tiqianpi!='' ">
+                and `tiqianpi` =#{tiqianpi}
+            </if>
+            <if test=" signed!=null and  signed!='' ">
+                and `signed` =#{signed}
             </if>
         </where>
     </select>
@@ -127,7 +178,7 @@
 
 
     <update id="deleteUserInfoByIds" parameterType="bit.ss.surveysystem.modules.sys.Entity.UserEntity">
-        delete from  sys_user  where id in
+        delete from  user_info  where admission_number in
         <foreach collection="list" item="item" open="(" close=")" separator=",">
             #{item.id}
         </foreach>

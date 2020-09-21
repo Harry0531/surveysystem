@@ -168,18 +168,18 @@ public class SurveyTest {
     void testInsertOrUpdateAns(){
         AnsSurveyEntity ansSurveyEntity = new AnsSurveyEntity();
         ansSurveyEntity.preInsert();
-        ansSurveyEntity.setSurveyId("556549479e1f45feba4a5edb88c0f1ad");
+        ansSurveyEntity.setSurveyId("79aef530b1894beb89f8c8e80bfa25db");
         ansSurveyEntity.setRespondentId("1120173305");
 
         List<AnswerEntity> answerEntities = new ArrayList<>();
 
         AnswerEntity a1 = new AnswerEntity();
-        a1.setAnswer("张佳明");
-        a1.setQuestionId("f7c02b1889fb4692881d6f3cf3ab95a7");
+        a1.setAnswer("佳明哥");
+        a1.setQuestionId("56b9481c45b044d28a8aa8f780782c13");
 
         AnswerEntity a2 = new AnswerEntity();
         a2.setAnswer("大一");
-        a2.setQuestionId("ac2efd24f3834a15a0cb446d86a14c46");
+        a2.setQuestionId("d35a2d68a9e04e01b097935f0fda064d");
 
         answerEntities.add(a1);
         answerEntities.add(a2);

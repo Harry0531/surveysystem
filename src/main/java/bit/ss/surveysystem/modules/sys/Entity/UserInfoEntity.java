@@ -12,7 +12,7 @@ public class UserInfoEntity extends DataEntity<UserInfoEntity> {
     private String name;
     private String contact;//联系方式
     private String alternateContact;//备用联系方式
-    private Integer type;//身份
+    private String type;//身份
     private String studentName;
 
     private String province;
@@ -28,7 +28,7 @@ public class UserInfoEntity extends DataEntity<UserInfoEntity> {
     private Integer tiqianpi;//提前批
     private Integer signed;//已签约
 
-    private Integer model;//高考模式
+    private String model;//高考模式
     private String subject;//高考科目
 
 

@@ -175,55 +175,58 @@ public class DataService {
         }
 
         //todo 排序
-        for(Integer sort:searchEntity.getSortConditions()){
-            //正序
-            int index = Math.abs(sort)-1;
-            String type = surveyEntity.getQuestions().get(index).getValidation();
-            if("phone".equals(type)||"number".equals(type)){
-                result.sort(new Comparator<SearchEntity>() {
-                    @Override
-                    public int compare(SearchEntity o1, SearchEntity o2) {
-                        String a1="",a2="";
-                        String quesId = surveyEntity.getQuestions().get(index).getId();
-                        for(AnswerEntity answerEntity:o1.getAnsEntity().getAnsList()){
-                            if(quesId.equals(answerEntity.getQuestionId())){
-                                a1 = answerEntity.getAnswer();
-                                break;
+        if(searchEntity.getSortConditions()!=null){
+            for(Integer sort:searchEntity.getSortConditions()){
+                //正序
+                int index = Math.abs(sort)-1;
+                String type = surveyEntity.getQuestions().get(index).getValidation();
+                if("phone".equals(type)||"integer".equals(type)||"grade".equals(type)||"rank".equals(type)){
+                    result.sort(new Comparator<SearchEntity>() {
+                        @Override
+                        public int compare(SearchEntity o1, SearchEntity o2) {
+                            String a1="",a2="";
+                            String quesId = surveyEntity.getQuestions().get(index).getId();
+                            for(AnswerEntity answerEntity:o1.getAnsEntity().getAnsList()){
+                                if(quesId.equals(answerEntity.getQuestionId())){
+                                    a1 = answerEntity.getAnswer();
+                                    break;
+                                }
                             }
-                        }
-                        for(AnswerEntity answerEntity:o2.getAnsEntity().getAnsList()){
-                            if(quesId.equals(answerEntity.getQuestionId())){
-                                a2 = answerEntity.getAnswer();
-                                break;
+                            for(AnswerEntity answerEntity:o2.getAnsEntity().getAnsList()){
+                                if(quesId.equals(answerEntity.getQuestionId())){
+                                    a2 = answerEntity.getAnswer();
+                                    break;
+                                }
                             }
+                            return sort*(Integer.parseInt(a1)-Integer.parseInt(a2));
                         }
-                        return sort*(Integer.parseInt(a1)-Integer.parseInt(a2));
-                    }
-                });
-            }
-            else{
-                result.sort(new Comparator<SearchEntity>() {
-                    @Override
-                    public int compare(SearchEntity o1, SearchEntity o2) {
-                        String a1="",a2="";
-                        String quesId = surveyEntity.getQuestions().get(index).getId();
-                        for(AnswerEntity answerEntity:o1.getAnsEntity().getAnsList()){
-                            if(quesId.equals(answerEntity.getQuestionId())){
-                                a1 = answerEntity.getAnswer();
-                                break;
+                    });
+                }
+                else{
+                    result.sort(new Comparator<SearchEntity>() {
+                        @Override
+                        public int compare(SearchEntity o1, SearchEntity o2) {
+                            String a1="",a2="";
+                            String quesId = surveyEntity.getQuestions().get(index).getId();
+                            for(AnswerEntity answerEntity:o1.getAnsEntity().getAnsList()){
+                                if(quesId.equals(answerEntity.getQuestionId())){
+                                    a1 = answerEntity.getAnswer();
+                                    break;
+                                }
                             }
-                        }
-                        for(AnswerEntity answerEntity:o2.getAnsEntity().getAnsList()){
-                            if(quesId.equals(answerEntity.getQuestionId())){
-                                a2 = answerEntity.getAnswer();
-                                break;
+                            for(AnswerEntity answerEntity:o2.getAnsEntity().getAnsList()){
+                                if(quesId.equals(answerEntity.getQuestionId())){
+                                    a2 = answerEntity.getAnswer();
+                                    break;
+                                }
                             }
+                            return sort*(a1.compareTo(a2));
                         }
-                        return sort*(a1.compareTo(a2));
-                    }
-                });
+                    });
+                }
             }
         }
+
 
         return result;
     }
