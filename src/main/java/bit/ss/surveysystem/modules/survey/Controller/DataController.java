@@ -45,14 +45,13 @@ public class DataController extends BaseApi {
         }
     }
 
-    @RequestMapping(value = "exportSurvey")
+    @RequestMapping(value = "getExportId",method = RequestMethod.POST)
     @ResponseBody
     public Object exportSurvey(
-            @RequestBody SearchEntity searchEntity,
-            HttpServletResponse response
+            @RequestBody SearchEntity searchEntity
     ) throws Exception {
         try {
-            Object result = dataService.exportSurvey(searchEntity,response);
+            Object result = dataService.getExportId(searchEntity);
             return retMsg.Set(MsgType.SUCCESS,result);
         } catch (Exception e) {
             e.printStackTrace();
@@ -60,5 +59,20 @@ public class DataController extends BaseApi {
         }
     }
 
+
+    @RequestMapping(value = "exportSurvey")
+    @ResponseBody
+    public Object exportSurvey(
+            @RequestParam String ExcelId,
+            HttpServletResponse response
+    ) throws Exception {
+        try {
+            Object result = dataService.exportSurvey(ExcelId,response);
+            return retMsg.Set(MsgType.SUCCESS,result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return retMsg.Set(MsgType.ERROR);
+        }
+    }
 
 }

@@ -15,6 +15,8 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -295,8 +297,16 @@ public class DataService {
         return result;
     }
 
+    public String getExportId(SearchEntity searchEntity){
+        searchEntity.preInsert();
+        mongoTemplate.save(searchEntity,"excel");
+        return searchEntity.getId();
+    }
 
-    public Object exportSurvey(SearchEntity searchEntity, HttpServletResponse response){
+    public Object exportSurvey(String ExcelId, HttpServletResponse response){
+        Query query = new Query();
+        query.addCriteria(Criteria.where("id").is(ExcelId));
+        SearchEntity searchEntity = mongoTemplate.findOne(query,SearchEntity.class,"excel");
         SurveyEntity surveyEntity = surveyService.selectSurveyByConditions(searchEntity.getSurveyEntity()).get(0);
         List<SearchEntity> searchEntities = getAnsListByConditions(searchEntity);
         List<AnsSurveyEntity> ansSurveyEntityList = new ArrayList<>();
