@@ -23,18 +23,30 @@
         select count(*) from sys_config a
         <where>
             <if test="page.searchKey != null and page.searchKey != '' ">
-                and a.config_key like concat('%', #{page.searchKey}, '%')
+                and   `config_key`=#{page.searchKey}
+            </if>
+            <if test="configKey!= null and configKey != '' ">
+                and   `config_key`=#{configKey}
+            </if>
+            <if test="configValue!= null and configValue!= '' ">
+                and   `config_value`=#{configValue}
             </if>
         </where>
     </select>
 
     <select id="selectConfigListByPage" parameterType="bit.ss.surveysystem.modules.sys.Entity.ConfigEntity"
             resultMap="ConfigBean">
-        select *,
+        select *
         from sys_config
         <where>
             <if test="page.searchKey != null and page.searchKey != '' ">
                 and   `config_key`=#{page.searchKey}
+            </if>
+            <if test="configKey!= null and configKey != '' ">
+                and   `config_key`=#{configKey}
+            </if>
+            <if test="configValue!= null and configValue!= '' ">
+                and   `config_value`=#{configValue}
             </if>
         </where>
         ORDER BY `sort` DESC

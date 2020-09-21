@@ -52,8 +52,8 @@ public class ConfigController extends BaseApi {
     @ResponseBody
     public Object selectConfigListByPage(@RequestBody ConfigEntity configEntity)throws Exception {
             try{
-                Page<Dict> page = new Page<>();
-                page.setResultList(configService.selectDictListByPage(configEntity));
+                Page<ConfigEntity> page = new Page<>();
+                page.setResultList(configService.selectConfigListByPage(configEntity));
                 page.setTotal(configService.selectSearchCount(configEntity));
                 return retMsg.Set(MsgType.SUCCESS,page);
             }catch (Exception e){
@@ -66,11 +66,11 @@ public class ConfigController extends BaseApi {
     @ResponseBody
     public Object insertOrUpdateConfig(@RequestBody ConfigEntity configEntity)throws Exception {
         if("".equals(configEntity.getId())||configEntity.getId()==null){
-            if(configService.insertDict(configEntity))
+            if(configService.insertConfig(configEntity))
                 return retMsg.Set(MsgType.SUCCESS);
             else return retMsg.Set(MsgType.ERROR);
         }else{
-            if(configService.updateDict(configEntity))
+            if(configService.updateConfig(configEntity))
                 return retMsg.Set(MsgType.SUCCESS);
             else return retMsg.Set(MsgType.ERROR);
         }
@@ -81,7 +81,7 @@ public class ConfigController extends BaseApi {
     @ResponseBody
     public Object deleteConfigByIds(@RequestBody List<ConfigEntity> configEntities)throws Exception {
         try{
-            if(configService.deleteDictByIds(configEntities)){
+            if(configService.deleteConfigByIds(configEntities)){
                 return retMsg.Set(MsgType.SUCCESS);
             }else
                 return retMsg.Set(MsgType.ERROR);
@@ -97,7 +97,7 @@ public class ConfigController extends BaseApi {
         ConfigEntity configEntity = new ConfigEntity();
         configEntity.setId(configs);
         try{
-            if(configService.deleteDictById(configEntity)){
+            if(configService.deleteConfigById(configEntity)){
                 return retMsg.Set(MsgType.SUCCESS);
             }else
                 return retMsg.Set(MsgType.ERROR);

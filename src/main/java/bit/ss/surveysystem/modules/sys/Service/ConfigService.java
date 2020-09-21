@@ -21,25 +21,25 @@ public class ConfigService {
     }
 
     //关于字典操作
-    public List<Dict> selectDictListByPage(ConfigEntity configEntity){
+    public List<ConfigEntity> selectConfigListByPage(ConfigEntity configEntity){
         return configDao.selectConfigListByPage(configEntity);
     }
     public int selectSearchCount(ConfigEntity configEntity) {
         return configDao.selectSearchCount(configEntity);
     }
 
-    public  boolean insertDict(ConfigEntity configEntity){
+    public  boolean insertConfig(ConfigEntity configEntity){
         configEntity.preInsert();
         return configDao.insertConfig(configEntity) == 1;
     }
-    public boolean deleteDictByIds(List<ConfigEntity> configEntities){
+    public boolean deleteConfigByIds(List<ConfigEntity> configEntities){
         return configEntities.size()==0 || configDao.deleteConfigByIds(configEntities)==configEntities.size();
     }
-    public boolean deleteDictById(ConfigEntity configEntity){
+    public boolean deleteConfigById(ConfigEntity configEntity){
         return configDao.deleteConfigById(configEntity)==1;
     }
 
-    public  boolean updateDict(ConfigEntity configEntity){
+    public  boolean updateConfig(ConfigEntity configEntity){
         return configDao.updateConfig(configEntity) == 1;
     }
 

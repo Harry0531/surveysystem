@@ -14,7 +14,7 @@ public interface ConfigDao {
     List<String> selectConfigTypeList();
 
     //关于字典操作
-    List<Dict> selectConfigListByPage(ConfigEntity configEntity);
+    List<ConfigEntity> selectConfigListByPage(ConfigEntity configEntity);
     int selectSearchCount(ConfigEntity configEntity);
 
     int insertConfig(ConfigEntity configEntity);

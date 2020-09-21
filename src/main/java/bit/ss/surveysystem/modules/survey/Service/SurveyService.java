@@ -1,6 +1,7 @@
 package bit.ss.surveysystem.modules.survey.Service;
 
 import bit.ss.surveysystem.modules.survey.Entity.Ans.AnsSurveyEntity;
+import bit.ss.surveysystem.modules.survey.Entity.Ques.QuestionEntity;
 import bit.ss.surveysystem.modules.survey.Entity.SurveyEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -57,6 +58,11 @@ public class SurveyService {
         try {
             if(surveyEntity.getId()==null){
                 surveyEntity.preInsert();
+            }
+            for(QuestionEntity ques:surveyEntity.getQuestions()){
+                if(ques.getId() == null){
+                    ques.preInsert();
+                }
             }
             Query query = new Query();
             query.addCriteria(Criteria.where("id").is(surveyEntity.getId()));
