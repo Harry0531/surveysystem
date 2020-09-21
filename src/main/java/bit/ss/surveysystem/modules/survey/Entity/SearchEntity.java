@@ -1,5 +1,6 @@
 package bit.ss.surveysystem.modules.survey.Entity;
 
+import bit.ss.surveysystem.modules.survey.Entity.Ans.AnsSurveyEntity;
 import bit.ss.surveysystem.modules.survey.Entity.Ques.QuestionEntity;
 import bit.ss.surveysystem.modules.sys.Entity.UserEntity;
 import bit.ss.surveysystem.modules.sys.Entity.UserInfoEntity;
@@ -13,4 +14,7 @@ public class SearchEntity {
 
     private SurveyEntity surveyEntity;
 
+    private AnsSurveyEntity ansEntity;
+
+    private List<Integer> sortConditions;
 }

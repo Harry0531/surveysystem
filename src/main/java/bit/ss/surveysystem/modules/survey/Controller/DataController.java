@@ -33,6 +33,17 @@ public class DataController extends BaseApi {
         }
     }
 
+    @RequestMapping(value = "getAnsListByConditions", method = RequestMethod.POST)
+    @ResponseBody
+    public Object getSurveyTableAns(@RequestBody SearchEntity searchEntity) throws Exception {
+        try {
+            Object result = dataService.getAnsListByConditions(searchEntity);
+            return retMsg.Set(MsgType.SUCCESS,result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return retMsg.Set(MsgType.ERROR);
+        }
+    }
 
     @RequestMapping(value = "exportSurvey")
     @ResponseBody

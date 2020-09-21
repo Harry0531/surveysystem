@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -36,7 +37,7 @@ public class DataService {
     @Autowired
     UserService userService;
 
-    public List<AnsSurveyEntity> getAnsListByConditions(SearchEntity searchEntity){
+    public List<SearchEntity> getAnsListByConditions(SearchEntity searchEntity){
         List<SurveyEntity> surveyEntities=surveyService.selectSurveyByConditions(searchEntity.getSurveyEntity());
         if(surveyEntities.size()==0){
             return null;
@@ -158,7 +159,73 @@ public class DataService {
             }
         }
 
-        return ansSurveyEntityList;
+        List<SearchEntity> result = new ArrayList<>();
+        SearchEntity tmpSearch ;
+        for(AnsSurveyEntity ansSurveyEntity1:ansSurveyEntityList){
+            tmpSearch = new SearchEntity();
+            tmpSearch.setAnsEntity(ansSurveyEntity1);
+
+            for (UserInfoEntity user:userList){
+                if(user.getAdmissionNumber().equals(ansSurveyEntity1.getRespondentId())){
+                    tmpSearch.setUserConditions(user);
+                    break;
+                }
+            }
+            result.add(tmpSearch);
+        }
+
+        //todo 排序
+        for(Integer sort:searchEntity.getSortConditions()){
+            //正序
+            int index = Math.abs(sort)-1;
+            String type = surveyEntity.getQuestions().get(index).getValidation();
+            if("phone".equals(type)||"number".equals(type)){
+                result.sort(new Comparator<SearchEntity>() {
+                    @Override
+                    public int compare(SearchEntity o1, SearchEntity o2) {
+                        String a1="",a2="";
+                        String quesId = surveyEntity.getQuestions().get(index).getId();
+                        for(AnswerEntity answerEntity:o1.getAnsEntity().getAnsList()){
+                            if(quesId.equals(answerEntity.getQuestionId())){
+                                a1 = answerEntity.getAnswer();
+                                break;
+                            }
+                        }
+                        for(AnswerEntity answerEntity:o2.getAnsEntity().getAnsList()){
+                            if(quesId.equals(answerEntity.getQuestionId())){
+                                a2 = answerEntity.getAnswer();
+                                break;
+                            }
+                        }
+                        return sort*(Integer.parseInt(a1)-Integer.parseInt(a2));
+                    }
+                });
+            }
+            else{
+                result.sort(new Comparator<SearchEntity>() {
+                    @Override
+                    public int compare(SearchEntity o1, SearchEntity o2) {
+                        String a1="",a2="";
+                        String quesId = surveyEntity.getQuestions().get(index).getId();
+                        for(AnswerEntity answerEntity:o1.getAnsEntity().getAnsList()){
+                            if(quesId.equals(answerEntity.getQuestionId())){
+                                a1 = answerEntity.getAnswer();
+                                break;
+                            }
+                        }
+                        for(AnswerEntity answerEntity:o2.getAnsEntity().getAnsList()){
+                            if(quesId.equals(answerEntity.getQuestionId())){
+                                a2 = answerEntity.getAnswer();
+                                break;
+                            }
+                        }
+                        return sort*(a1.compareTo(a2));
+                    }
+                });
+            }
+        }
+
+        return result;
     }
 
     public Object getSurveyStatistics(SearchEntity searchEntity){
@@ -167,7 +234,11 @@ public class DataService {
             return null;
         }
         SurveyEntity surveyEntity =surveyEntities.get(0);
-        List<AnsSurveyEntity> ansSurveyEntityList = getAnsListByConditions(searchEntity);
+        List<SearchEntity> searchEntities = getAnsListByConditions(searchEntity);
+        List<AnsSurveyEntity> ansSurveyEntityList = new ArrayList<>();
+        for (SearchEntity searchEntity1:searchEntities){
+            ansSurveyEntityList.add(searchEntity1.getAnsEntity());
+        }
         //遍历每个题目进行统计
         HashMap<Integer,Object> result = new HashMap<>();
         for(QuestionEntity ques:surveyEntity.getQuestions()){
@@ -224,7 +295,11 @@ public class DataService {
 
     public Object exportSurvey(SearchEntity searchEntity, HttpServletResponse response){
         SurveyEntity surveyEntity = surveyService.selectSurveyByConditions(searchEntity.getSurveyEntity()).get(0);
-        List<AnsSurveyEntity> ansSurveyEntityList = getAnsListByConditions(searchEntity);
+        List<SearchEntity> searchEntities = getAnsListByConditions(searchEntity);
+        List<AnsSurveyEntity> ansSurveyEntityList = new ArrayList<>();
+        for (SearchEntity searchEntity1:searchEntities){
+            ansSurveyEntityList.add(searchEntity1.getAnsEntity());
+        }
 
         XSSFWorkbook wb = new XSSFWorkbook();
         XSSFSheet sheet = wb.createSheet(surveyEntity.getTitle());
