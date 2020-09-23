@@ -3,6 +3,7 @@ package bit.ss.surveysystem.modules.survey.Service;
 import bit.ss.surveysystem.modules.survey.Entity.Ans.AnsSurveyEntity;
 import bit.ss.surveysystem.modules.survey.Entity.Ans.AnswerEntity;
 import bit.ss.surveysystem.modules.survey.Entity.Ques.QuestionEntity;
+import bit.ss.surveysystem.modules.survey.Entity.Ques.QuestionType;
 import bit.ss.surveysystem.modules.survey.Entity.SearchEntity;
 import bit.ss.surveysystem.modules.survey.Entity.SurveyEntity;
 import bit.ss.surveysystem.modules.sys.Entity.UserInfoEntity;
@@ -14,11 +15,13 @@ import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.IssuerUriCondition;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
+import javax.imageio.plugins.jpeg.JPEGImageReadParam;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -38,6 +41,25 @@ public class DataService {
 
     @Autowired
     UserService userService;
+    public Object getAnsListByPerson(AnsSurveyEntity ansSurveyEntity){
+        AnsSurveyEntity person = new AnsSurveyEntity();
+        person.setRespondentId(ansSurveyEntity.getRespondentId());
+        List<AnsSurveyEntity> ansSurveyEntityList = surveyService.selectAnswerByConditions(person);
+
+        List<HashMap> result = new ArrayList<>();
+        for(AnsSurveyEntity ans:ansSurveyEntityList){
+            HashMap<String,Object> tmp = new HashMap<>();
+            SurveyEntity surveyEntity = new SurveyEntity();
+            surveyEntity.setId(ans.getSurveyId());
+            surveyEntity = surveyService.selectSurveyByConditions(surveyEntity).get(0);
+            tmp.put("survey",surveyEntity);
+            tmp.put("answer",ans);
+            result.add(tmp);
+        }
+
+        return result;
+
+    }
 
     public List<SearchEntity> getAnsListByConditions(SearchEntity searchEntity){
         List<SurveyEntity> surveyEntities=surveyService.selectSurveyByConditions(searchEntity.getSurveyEntity());
@@ -57,7 +79,7 @@ public class DataService {
         List<String> userIdList;
         userIdList = new ArrayList<>();
         for(UserInfoEntity userInfoEntity:userList){
-            userIdList.add(userInfoEntity.getAdmissionNumber());
+            userIdList.add(userInfoEntity.getId());
         }
         for(AnsSurveyEntity ans:oldAnsList){
             if(userIdList.contains(ans.getRespondentId())){
@@ -168,7 +190,7 @@ public class DataService {
             tmpSearch.setAnsEntity(ansSurveyEntity1);
 
             for (UserInfoEntity user:userList){
-                if(user.getAdmissionNumber().equals(ansSurveyEntity1.getRespondentId())){
+                if(user.getId().equals(ansSurveyEntity1.getRespondentId())){
                     tmpSearch.setUserConditions(user);
                     break;
                 }
@@ -262,14 +284,33 @@ public class DataService {
             singleResult.put("summary",summaryAns);
             //答案统计
             HashMap<String,Object> statisticsAns = new HashMap<>();
+            int totalCnt = ansSurveyEntityList.size();
+            List<Integer> ansCnt = new ArrayList<>();
             switch (ques.getType()){
                 case FILL_BLANK:
                 case ORDER:
                      break;
                 case MULTIPLE:
+                    for(int i =0;i<ques.getAnswerList().size();i++) ansCnt.add(0);
+                    for(AnsSurveyEntity ansList:ansSurveyEntityList){
+                        //anslist 每个人的答案列表
+                        for(AnswerEntity ans:ansList.getAnsList()){
+                            //ans 每个人的每道题答案
+                            if(ans.getQuestionId().equals(ques.getId())){
+                                List<String> multiAns = Arrays.asList(ans.getAnswer().split(";"));
+                                for(String singleAns:multiAns){
+                                    int index = ques.getAnswerList().indexOf(singleAns);
+                                    ansCnt.set(index,ansCnt.get(index)+1);
+                                }
+
+                            }
+                        }
+                    }
+                    for(int i=0;i<ques.getAnswerList().size();i++){
+                        statisticsAns.put(ques.getAnswerList().get(i),ansCnt.get(i));
+                    }
+                    break;
                 case SINGLE:
-                     int totalCnt = ansSurveyEntityList.size();
-                     List<Integer> ansCnt = new ArrayList<>();
                      for(int i =0;i<ques.getAnswerList().size();i++) ansCnt.add(0);
                      for(AnsSurveyEntity ansList:ansSurveyEntityList){
                          //anslist 每个人的答案列表
@@ -371,7 +412,7 @@ public class DataService {
             dataRow = sheet.createRow(rowIndex+i);
             colIndex = 0;
             userInfoEntity = new UserInfoEntity();
-            userInfoEntity.setAdmissionNumber(ansSurveyEntityList.get(i).getRespondentId());
+            userInfoEntity.setId(ansSurveyEntityList.get(i).getRespondentId());
             userInfoEntity = userService.getUserInfoByConditions(userInfoEntity).get(0);
             //前几列输入用户信息
             for(int j =0;j<extraTitle.size();j++){

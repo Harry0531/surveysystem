@@ -66,7 +66,7 @@ public class SurveyTest {
         surveyEntity.preInsert();
 
         surveyEntity.setOwnerId("2bcdd55957804be38f99e770fbfd8a20");
-        surveyEntity.setTitle("测试问卷1");
+        surveyEntity.setTitle("测试问卷");
         surveyEntity.setDescription("这是一个测试问卷");
         surveyEntity.setEnable(false);
 
@@ -77,7 +77,7 @@ public class SurveyTest {
         q1.setTitle("你是谁");
         q1.setIndex(1);
         q1.setType(QuestionType.FILL_BLANK);
-        q1.setDefaultAns("王日天");
+        q1.setDefaultAns("王天");
         questionEntities.add(q1);
 
 

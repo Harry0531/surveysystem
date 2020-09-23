@@ -1,6 +1,7 @@
 package bit.ss.surveysystem.modules.survey.Service;
 
 import bit.ss.surveysystem.modules.survey.Entity.Ans.AnsSurveyEntity;
+import bit.ss.surveysystem.modules.survey.Entity.Ans.AnswerEntity;
 import bit.ss.surveysystem.modules.survey.Entity.Ques.QuestionEntity;
 import bit.ss.surveysystem.modules.survey.Entity.SurveyEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.data.querydsl.QuerydslRepositoryInvokerAdapter;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -60,7 +62,7 @@ public class SurveyService {
                 surveyEntity.preInsert();
             }
             for(QuestionEntity ques:surveyEntity.getQuestions()){
-                if(ques.getId() == null){
+                if(ques.getId().contains("#")) {
                     ques.preInsert();
                 }
             }
@@ -85,6 +87,7 @@ public class SurveyService {
 
     }
 
+
     public int copySurvey(SurveyEntity surveyEntity){
         Query query = new Query();
         query.addCriteria(Criteria.where("id").is(surveyEntity.getId()));
@@ -100,8 +103,16 @@ public class SurveyService {
     public int deleteSurveyById(SurveyEntity surveyEntity){
         Query query = Query.query(Criteria.where("id").is(surveyEntity.getId()));
         mongoTemplate.remove(query,SurveyEntity.class,"suit");
+        return 1;
+    }
 
-
+    public int deleteSurveyByIds(List<SurveyEntity> surveyEntity){
+        List<String> idlist = new ArrayList<>();
+        for(SurveyEntity s:surveyEntity){
+            idlist.add(s.getId());
+        }
+        Query query = Query.query(Criteria.where("id").in(idlist));
+        mongoTemplate.remove(query,SurveyEntity.class,"suit");
         return 1;
     }
 
@@ -140,7 +151,13 @@ public class SurveyService {
             if(ansSurveyEntity.getSurveyId()!=null&&!"".equals(ansSurveyEntity.getSurveyId())){
                 query.addCriteria(Criteria.where("survey_id").is(ansSurveyEntity.getSurveyId()));
             }
-            return mongoTemplate.find(query,AnsSurveyEntity.class,"ans");
+            List<AnsSurveyEntity> result =  mongoTemplate.find(query,AnsSurveyEntity.class,"ans");
+            for(AnsSurveyEntity anslist :result){
+                for(AnswerEntity ans:anslist.getAnsList()){
+                    ans.setAnswer(ans.getAnswer().replace("@@",";"));
+                }
+            }
+            return result;
     }
 
     public int deleteAnswer(AnsSurveyEntity ansSurveyEntity){
@@ -149,4 +166,13 @@ public class SurveyService {
         return 1;
     }
 
+    public int deleteAnswers(List<AnsSurveyEntity> ansSurveyEntity){
+        List<String> idList = new ArrayList<>();
+        for(AnsSurveyEntity ans:ansSurveyEntity){
+            idList.add(ans.getId());
+        }
+        Query query = Query.query(Criteria.where("id").in(idList));
+        mongoTemplate.remove(query,AnsSurveyEntity.class,"ans");
+        return 1;
+    }
 }

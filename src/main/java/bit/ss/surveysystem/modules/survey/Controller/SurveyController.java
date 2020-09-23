@@ -74,9 +74,9 @@ public class SurveyController extends BaseApi {
         }
     }
 
-    @RequestMapping(value="deleteSurvey",method = RequestMethod.POST)
+    @RequestMapping(value="deleteSurveyById",method = RequestMethod.POST)
     @ResponseBody
-    public Object deleteSurvey(@RequestBody SurveyEntity surveyEntity)throws Exception {
+    public Object deleteSurveyById(@RequestBody SurveyEntity surveyEntity)throws Exception {
         try{
             if (surveyService.deleteSurveyById(surveyEntity)==1){
                 return retMsg.Set(MsgType.SUCCESS);
@@ -88,6 +88,23 @@ public class SurveyController extends BaseApi {
             return retMsg.Set(MsgType.ERROR);
         }
     }
+
+
+    @RequestMapping(value="deleteSurveyByIds",method = RequestMethod.POST)
+    @ResponseBody
+    public Object deleteSurveyByIds(@RequestBody List<SurveyEntity> surveyEntity)throws Exception {
+        try{
+            if (surveyService.deleteSurveyByIds(surveyEntity)==1){
+                return retMsg.Set(MsgType.SUCCESS);
+            }else{
+                return retMsg.Set(MsgType.WARNING,"未更新任何数据");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return retMsg.Set(MsgType.ERROR);
+        }
+    }
+
 
     @RequestMapping(value="insertOrUpdateAnswer",method = RequestMethod.POST)
     @ResponseBody
@@ -103,9 +120,9 @@ public class SurveyController extends BaseApi {
         }
     }
 
-    @RequestMapping(value="deleteAnswer",method = RequestMethod.POST)
+    @RequestMapping(value="deleteAnswerById",method = RequestMethod.POST)
     @ResponseBody
-    public Object deleteAnswer(@RequestBody AnsSurveyEntity ansSurveyEntity)throws Exception {
+    public Object deleteAnswerById(@RequestBody AnsSurveyEntity ansSurveyEntity)throws Exception {
         try{
             if(surveyService.deleteAnswer(ansSurveyEntity) ==1){
                 return  retMsg.Set(MsgType.SUCCESS);
@@ -116,6 +133,20 @@ public class SurveyController extends BaseApi {
             return retMsg.Set(MsgType.ERROR);
         }
     }
+    @RequestMapping(value="deleteAnswerByIds",method = RequestMethod.POST)
+    @ResponseBody
+    public Object deleteAnswerByIds(@RequestBody List<AnsSurveyEntity> ansSurveyEntity)throws Exception {
+        try{
+            if(surveyService.deleteAnswers(ansSurveyEntity) ==1){
+                return  retMsg.Set(MsgType.SUCCESS);
+            }
+            return retMsg.Set(MsgType.WARNING,"未更新任何数据");
+        }catch (Exception e){
+            e.printStackTrace();
+            return retMsg.Set(MsgType.ERROR);
+        }
+    }
+
     @RequestMapping(value="getAnswerByConditions",method = RequestMethod.POST)
     @ResponseBody
     public Object getAnswerByConditions(@RequestBody AnsSurveyEntity ansSurveyEntity)throws Exception {

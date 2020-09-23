@@ -2,6 +2,7 @@ package bit.ss.surveysystem.modules.survey.Controller;
 
 import bit.ss.surveysystem.common.web.BaseApi;
 import bit.ss.surveysystem.common.web.MsgType;
+import bit.ss.surveysystem.modules.survey.Entity.Ans.AnsSurveyEntity;
 import bit.ss.surveysystem.modules.survey.Entity.SearchEntity;
 import bit.ss.surveysystem.modules.survey.Entity.SurveyEntity;
 import bit.ss.surveysystem.modules.survey.Service.DataService;
@@ -38,6 +39,18 @@ public class DataController extends BaseApi {
     public Object getSurveyTableAns(@RequestBody SearchEntity searchEntity) throws Exception {
         try {
             Object result = dataService.getAnsListByConditions(searchEntity);
+            return retMsg.Set(MsgType.SUCCESS,result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return retMsg.Set(MsgType.ERROR);
+        }
+    }
+
+    @RequestMapping(value = "getAnsListByPerson", method = RequestMethod.POST)
+    @ResponseBody
+    public Object getSurveyTableAns(@RequestBody AnsSurveyEntity userId) throws Exception {
+        try {
+            Object result = dataService.getAnsListByPerson(userId);
             return retMsg.Set(MsgType.SUCCESS,result);
         } catch (Exception e) {
             e.printStackTrace();
