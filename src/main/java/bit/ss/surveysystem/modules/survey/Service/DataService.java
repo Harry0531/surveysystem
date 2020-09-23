@@ -300,7 +300,7 @@ public class DataService {
                                 List<String> multiAns = Arrays.asList(ans.getAnswer().split(";"));
                                 for(String singleAns:multiAns){
                                     int index = ques.getAnswerList().indexOf(singleAns);
-                                    ansCnt.set(index,ansCnt.get(index)+1);
+                                    if(index!=-1)  ansCnt.set(index,ansCnt.get(index)+1);
                                 }
 
                             }
@@ -318,7 +318,7 @@ public class DataService {
                              //ans 每个人的每道题答案
                              if(ans.getQuestionId().equals(ques.getId())){
                                  int index = ques.getAnswerList().indexOf(ans.getAnswer());
-                                 ansCnt.set(index,ansCnt.get(index)+1);
+                                 if(index!=-1)  ansCnt.set(index,ansCnt.get(index)+1);
                              }
                          }
                      }

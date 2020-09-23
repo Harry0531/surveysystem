@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 public class AnsSurveyEntity {
 
-    @Id
+
     private  String id;
 
     @Field("respondent_id")
@@ -19,8 +19,11 @@ public class AnsSurveyEntity {
     @Field("survey_id")
     private String surveyId;//问卷Id
 
+
     @Field("ans_list")
     private List<AnswerEntity> ansList;
+
+    public Boolean star;
     public void preInsert(){
         this.id = IdGen.uuid();
     }

@@ -151,6 +151,9 @@ public class SurveyService {
             if(ansSurveyEntity.getSurveyId()!=null&&!"".equals(ansSurveyEntity.getSurveyId())){
                 query.addCriteria(Criteria.where("survey_id").is(ansSurveyEntity.getSurveyId()));
             }
+        if(ansSurveyEntity.getStar()!=null&& ansSurveyEntity.getStar()){
+            query.addCriteria(Criteria.where("star").is(true));
+        }
             List<AnsSurveyEntity> result =  mongoTemplate.find(query,AnsSurveyEntity.class,"ans");
             for(AnsSurveyEntity anslist :result){
                 for(AnswerEntity ans:anslist.getAnsList()){
@@ -160,6 +163,12 @@ public class SurveyService {
             return result;
     }
 
+    public int starAnswer(AnsSurveyEntity ansSurveyEntity){
+        Query query = Query.query(Criteria.where("id").is(ansSurveyEntity.getId()));
+        Update update = Update.update("star",ansSurveyEntity.getStar());
+        mongoTemplate.updateMulti(query,update,"ans");
+        return 1;
+    }
     public int deleteAnswer(AnsSurveyEntity ansSurveyEntity){
         Query query = Query.query(Criteria.where("id").is(ansSurveyEntity.getId()));
         mongoTemplate.remove(query,AnsSurveyEntity.class,"ans");

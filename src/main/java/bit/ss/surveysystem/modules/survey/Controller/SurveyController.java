@@ -171,4 +171,16 @@ public class SurveyController extends BaseApi {
         }
     }
 
+    @RequestMapping(value="starAnswer",method = RequestMethod.POST)
+    @ResponseBody
+    public Object starAnswer(@RequestBody AnsSurveyEntity ansSurveyEntity)throws Exception {
+        try{
+            surveyService.starAnswer(ansSurveyEntity);
+            return retMsg.Set(MsgType.SUCCESS);
+        }catch (Exception e){
+            e.printStackTrace();
+            return retMsg.Set(MsgType.ERROR);
+        }
+    }
+
 }
