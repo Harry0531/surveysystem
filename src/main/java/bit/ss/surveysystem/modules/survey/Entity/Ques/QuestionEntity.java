@@ -12,6 +12,7 @@ import java.util.List;
 @Document
 public class QuestionEntity {
 
+    @Field("id")
     private String id;//问题ID
 
     private String title;//题目

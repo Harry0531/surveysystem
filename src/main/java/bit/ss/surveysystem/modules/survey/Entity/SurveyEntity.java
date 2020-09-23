@@ -16,7 +16,7 @@ import java.util.List;
 @Document(collection = "suit")
 public class SurveyEntity {
 
-
+    @Field("id")
     private String id;
 
     @Field("owner_id")

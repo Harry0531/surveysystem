@@ -6,11 +6,14 @@ import bit.ss.surveysystem.modules.survey.Entity.Ques.QuestionEntity;
 import bit.ss.surveysystem.modules.sys.Entity.UserEntity;
 import bit.ss.surveysystem.modules.sys.Entity.UserInfoEntity;
 import lombok.Data;
+import org.springframework.data.mongodb.core.mapping.Field;
+
 import java.util.List;
 
 @Data
 public class SearchEntity {
 
+    @Field("id")
     private String id;
 
     private UserInfoEntity userConditions;

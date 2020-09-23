@@ -130,7 +130,7 @@ public class SurveyService {
             update.set("respondent_id", ansSurveyEntity.getRespondentId());
             update.set("survey_id", ansSurveyEntity.getSurveyId());
             update.set("ans_list", ansSurveyEntity.getAnsList());
-
+            update.set("star", ansSurveyEntity.getStar());
             mongoTemplate.upsert(query,update,SurveyEntity.class,"ans");
             return 1;
         }catch (Exception e){

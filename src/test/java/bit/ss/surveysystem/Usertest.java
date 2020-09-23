@@ -3,6 +3,7 @@ package bit.ss.surveysystem;
 import bit.ss.surveysystem.modules.sys.Entity.UserEntity;
 import bit.ss.surveysystem.modules.sys.Entity.UserInfoEntity;
 import bit.ss.surveysystem.modules.sys.Service.UserService;
+import org.assertj.core.util.VisibleForTesting;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -40,5 +41,11 @@ public class Usertest {
         userInfoEntity.setType("学生");
         userInfoEntity.setId("2bcdd55957804be38f99e770fbfd8a20");
         System.out.println(userService.updateUserInfo(userInfoEntity));
+    }
+
+    @Test
+    void testInteger(){
+        String a = "13426122102";
+        System.out.println(Long.parseLong(a.trim()));
     }
 }

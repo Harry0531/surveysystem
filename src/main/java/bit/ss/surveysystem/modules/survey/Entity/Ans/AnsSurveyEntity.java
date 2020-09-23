@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 public class AnsSurveyEntity {
 
-
+    @Field("id")
     private  String id;
 
     @Field("respondent_id")

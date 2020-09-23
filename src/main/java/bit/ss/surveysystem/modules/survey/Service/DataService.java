@@ -68,8 +68,9 @@ public class DataService {
         }
         SurveyEntity surveyEntity =surveyEntities.get(0);
         //获取所有该问卷的答卷
-        AnsSurveyEntity ansSurveyEntity = new AnsSurveyEntity();
+        AnsSurveyEntity ansSurveyEntity = searchEntity.getAnsEntity();
         ansSurveyEntity.setSurveyId(surveyEntity.getId());
+
         List<AnsSurveyEntity> oldAnsList = surveyService.selectAnswerByConditions(ansSurveyEntity);
         List<AnsSurveyEntity> ansSurveyEntityList = new ArrayList<>();
         //对答卷进行筛选
@@ -222,7 +223,8 @@ public class DataService {
                                     break;
                                 }
                             }
-                            return sort*(Integer.parseInt(a1)-Integer.parseInt(a2));
+                            int sign = Long.parseLong(a1)-Long.parseLong(a2) > 0 ?1:-1;
+                            return sort*sign;
                         }
                     });
                 }
